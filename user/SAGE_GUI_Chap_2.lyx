@@ -1,0 +1,1563 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass book
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman times
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 11
+\spacing single
+\use_hyperref false
+\papersize letterpaper
+\use_geometry true
+\use_amsmath 2
+\use_esint 0
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1.25in
+\topmargin 1in
+\rightmargin 1.25in
+\bottommargin 1in
+\secnumdepth 5
+\tocdepth 5
+\paragraph_separation skip
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Creating a New S.A.G.E.
+ Project
+\end_layout
+
+\begin_layout Standard
+This section provides general instructions for creating a new S.A.G.E.
+ project using the GUI.
+\end_layout
+
+\begin_layout Section
+Input Data Requirements
+\end_layout
+
+\begin_layout Standard
+The S.A.G.E.
+ programs require input data (i.e., your pedigree file) to be a delimited
+ ASCII text file or Excel spreadsheet in which each line of the file contains
+ information on a single individual, as shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:S.A.G.E.-Input-Data"
+
+\end_inset
+
+ below.
+ The example shows a portion of an Excel spreadsheet containing pedigree
+ sample data.
+ Each row represents a different individual and each column represents a
+ different field or attribute of the individual.
+ The first row contains the names of the fields.
+ Field names are entirely up to the user and need not be identical to those
+ shown in the example; however only letters, numbers and the underscore
+ (
+\begin_inset Quotes eld
+\end_inset
+
+_
+\begin_inset Quotes erd
+\end_inset
+
+) character are permitted in field names.
+ 
+\end_layout
+
+\begin_layout Standard
+The sample shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:S.A.G.E.-Input-Data"
+
+\end_inset
+
+ will be interpreted by the S.A.G.E.
+ software as follows (ID is an abbreviation for 
+\begin_inset Quotes eld
+\end_inset
+
+identifier
+\begin_inset Quotes erd
+\end_inset
+
+):
+\end_layout
+
+\begin_layout Itemize
+Column 1 (FAMILY): identifies the pedigree to which the individual belongs.
+ The example shows 6 individuals who all belong to the pedigree designated
+ as 1256.
+ The coding for the pedigree ID may be any combination of numbers, letters
+ and printable characters, hence 
+\begin_inset Quotes eld
+\end_inset
+
+PED-2345
+\begin_inset Quotes erd
+\end_inset
+
+ would be a valid pedigree ID.
+\end_layout
+
+\begin_layout Itemize
+Column 2 (IND): uniquely identifies the individual within a given pedigree.
+ The pedigree ID and individual ID, taken together, must be unique within
+ the entire data file.
+ The coding for individual ID may be any combination of numbers, letters
+ and printable characters.
+\end_layout
+
+\begin_layout Itemize
+Column 3 (FATHER): identifies the individual's paternal parent
+\end_layout
+
+\begin_layout Itemize
+Column 4 (MOTHER): identifies the individual's maternal parent.
+ Parental IDs are used to establish family relationships among pedigree
+ members.
+ Every individual in the pedigree data file must have either two parents
+ or none.
+ The period (
+\begin_inset Quotes eld
+\end_inset
+
+.
+\begin_inset Quotes erd
+\end_inset
+
+) character is used to indicate a missing value for the parental identifier
+ in Figure 1, but this can be changed, as indicated later.
+ An individual with no parents specified is considered to be either a founder
+ or marry-in.
+ Thus with respect to family 1256, individual 1002 has mother: 2096 and
+ father: 2046.
+ 
+\end_layout
+
+\begin_layout Itemize
+Column 5 (SEX): The individual's sex.
+ Coding for sex is at the user's discretion; typical schemes are 
+\begin_inset Quotes eld
+\end_inset
+
+M
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+F
+\begin_inset Quotes erd
+\end_inset
+
+ (the default) or 
+\begin_inset Quotes eld
+\end_inset
+
+1
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+0
+\begin_inset Quotes erd
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Itemize
+Columns 6 - 12 (various traits and covariates): These columns record the
+ individual's specific trait and/or covariate values with respect to the
+ trait or disease of interest.
+ Data types may be binary (for affected/unaffected status) or quantitative.
+ Coding for a binary trait is at the user's discretion; typical schemes
+ are 
+\begin_inset Quotes eld
+\end_inset
+
+A
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+U
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+1
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+0
+\begin_inset Quotes erd
+\end_inset
+
+, etc.
+ The missing value character (
+\begin_inset Quotes eld
+\end_inset
+
+.
+\begin_inset Quotes erd
+\end_inset
+
+) is used to indicate that the information is unknown for a given individual
+ in Figure 1, but again, this can be changed..
+\end_layout
+
+\begin_layout Itemize
+Columns 13 - 15 (marker phenotypes): These columns record the individual's
+ specific marker phenotypes (sometimes referred to as 
+\emph on
+genotype
+\emph default
+, on the assumption that there is a one-one relation between marker phenotypes
+ and genotypes) with respect to specific markers along the human genome.
+ Each marker phenotype is encoded as the combination of two alleles delimted
+ by the slash (
+\begin_inset Quotes eld
+\end_inset
+
+/
+\begin_inset Quotes erd
+\end_inset
+
+) character.
+ Alleles may be encoded as any combination of letters and numbers, and the
+ choice of delimiters is also flexible.
+ Note that every marker locus must show either two alleles or none.
+ The missing allele character (in this example, 
+\begin_inset Quotes eld
+\end_inset
+
+.
+\begin_inset Quotes erd
+\end_inset
+
+) is used to indicate that the individual's genetic information is unknown
+ for a given location.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI2_01_Input_Format.jpg
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:S.A.G.E.-Input-Data"
+
+\end_inset
+
+Input Data Format
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Start S.A.G.E.
+\end_layout
+
+\begin_layout Standard
+On Windows platforms, double-click the S.A.G.E.
+ icon to run the GUI, and on Linux platforms you will need invoke the GUI
+ through the standard Java interface.
+ When the Setup dialog appears, select 
+\shape italic
+Create new project
+\shape default
+ to start (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:S.A.G.E.-Setup"
+
+\end_inset
+
+).
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI2_02_Setup_Dialog.jpg
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:S.A.G.E.-Setup"
+
+\end_inset
+
+Setup Dialog
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+When you click the 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+OK
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button, you will see a New Project dialog, so that you can proceed.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Importing Pedigree Data
+\end_layout
+
+\begin_layout Standard
+This section describes the process of importing pedigree data into the S.A.G.E.
+ project environment.
+ From the S.A.G.E.
+ Main Menu bar, select File -> New Project.
+ When the New Project dialog appears, enter a name for your project such
+ as 
+\begin_inset Quotes eld
+\end_inset
+
+Schizophrenia DHB Study 2010
+\begin_inset Quotes erd
+\end_inset
+
+ and select a project location directory.
+ S.A.G.E.
+ will create a new project folder within the directory you specify and store
+ all relevant files at that location (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:S.A.G.E.-New-Project"
+
+\end_inset
+
+).
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI2_03_New_Project_Dialog1.jpg
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:S.A.G.E.-New-Project"
+
+\end_inset
+
+New Project Dialog
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+When you click the 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+Next
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button, you will see a dialog that presents three options and your choice
+ depends on what kind of input files you have already prepared to use with
+ S.A.G.E.
+ If you have correctly prepared and formatted your pedigree data file as
+ described in the Chapter 3 of S.A.G.E.
+ User Reference Manual, then select the 
+\series bold
+middle
+\series default
+ option and click the 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+Next
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:S.A.G.E.-Import-Mode"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI2_04_New_Project_Dialog2.jpg
+	scale 37
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:S.A.G.E.-Import-Mode"
+
+\end_inset
+
+S.A.G.E.
+ Import Mode Dialog
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The next dialog requires you to enter the location of the pedigree data
+ file you wish to import into S.A.G.E.
+ (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:S.A.G.E.-Data-Location"
+
+\end_inset
+
+).
+ In addition, you must provide some information about the file format.
+ If your data is contained within an Excel spreadsheet, you may simply click
+ that option and proceed.
+ If your data is stored within an ASCII text file, then you must specify
+ the type of character used to delimit the fields (i.e., columns) and whether
+ or not the first row contains the field names (in which case, the first
+ row is referred to as a 
+\begin_inset Quotes eld
+\end_inset
+
+header row
+\begin_inset Quotes erd
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI2_05_Data_Location_Dialog.jpg
+	scale 37
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:S.A.G.E.-Data-Location"
+
+\end_inset
+
+Data Location Dialog
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+After you click on the 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+Next
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button once again, a Data Specification window will appear (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:S.A.G.E.-Data-Specification"
+
+\end_inset
+
+).
+ You may see a warning dialog stating that only a portion of the coumns
+ will be displayed.
+ This is normal for pedigree files that contains many hundreds (or thousands)
+ of genetic marker fields and it will not prevent you from successfully
+ loading or analyzing your data.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI2_06_Data_Specification_Window.jpg
+	scale 55
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:S.A.G.E.-Data-Specification"
+
+\end_inset
+
+Data Specification Window
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Data Specification Window displays the rows and columns found in the
+ original data file, along with the field names inferred from the header
+ row (if provided).
+ Your task at this point is to fully specify the semantics of each column
+ so that the data may be correctly interpreted by S.A.G.E.
+ programs.
+ For example, although the first column is labeled 
+\begin_inset Quotes eld
+\end_inset
+
+FAMILY
+\begin_inset Quotes erd
+\end_inset
+
+, the S.A.G.E.
+ software has no prior way of knowing that the column actually represents
+ a pedigree identifier.
+ You specify that bit of semantic information as follows:
+\end_layout
+
+\begin_layout Enumerate
+Click on the shaded cell containing the word 
+\begin_inset Quotes eld
+\end_inset
+
+Unspecified
+\begin_inset Quotes erd
+\end_inset
+
+ at the top of the column to make the drop-down arrow appear
+\end_layout
+
+\begin_layout Enumerate
+Click on the drop-down arrow to obtain a list of valid 
+\begin_inset Quotes eld
+\end_inset
+
+data type
+\begin_inset Quotes erd
+\end_inset
+
+ choices for the column
+\end_layout
+
+\begin_layout Enumerate
+Scroll down the list as needed to highlight the desired choice and click
+ to select it (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Data-Type-Specification-1"
+
+\end_inset
+
+).
+ Possible data type choices are:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\series bold
+\emph on
+Unspecified
+\series default
+\emph default
+ (default): if selected, the column will NOT be imported into the S.A.G.E.
+ environment
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+\emph on
+Pedigree ID
+\series default
+\emph default
+: means the column represents a family identifier
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+\emph on
+Individual ID
+\series default
+\emph default
+: means the column represents an individual identifier
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+\emph on
+Parent1
+\series default
+\emph default
+: means the column represents a parental identifier (maternal or paternal)
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+\emph on
+Parent2
+\series default
+\emph default
+: means the column represents a parental identifier (must be complementary
+ to Parent1)
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+\emph on
+SEX
+\series default
+\emph default
+: means the column represents the individual's sex code
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+\emph on
+TRAIT
+\series default
+\emph default
+: means the column represents an trait or phenotype presumed to have a heritable
+ component that you will wish to analyze.
+ May be binary or quantitative.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+\emph on
+COVARIATE
+\series default
+\emph default
+: means the column represents an arbitrary biometric, predictor or explanatory
+ variable.
+ (You will have the opportunity to analyze this variable as a trait, should
+ you wish to doso.) May be binary or quantitative.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+\emph on
+MARKER
+\series default
+\emph default
+: means the column represents a marker phenotype formatted as 
+\emph on
+X
+\emph default
+ 
+\emph on
+delim
+\emph default
+ 
+\emph on
+Y
+\emph default
+, where 
+\emph on
+X
+\emph default
+ and 
+\emph on
+Y
+\emph default
+ are values of alleles and 
+\emph on
+delim
+\emph default
+ is a single character delimiter.
+ For example, 
+\begin_inset Quotes eld
+\end_inset
+
+a/b, a/a, 1/0, 124-88, A~G, ...
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+\emph on
+ALLELE
+\series default
+\emph default
+: means the column represents a single allele with respect to some marker
+ phenotype.
+ In such a case, there must be two consecutive single-allele columns specified,
+ one for each of the two observed values at the locus.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+\emph on
+TRAIT MARKER
+\series default
+\emph default
+: means the column represents some phenotype for which you will be able
+ to specify a monogenic model that is sufficiently described to allow it
+ to be tested for linkage with one or more markers.
+ May be binary or quantitative.
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+\emph on
+TEXT
+\series default
+\emph default
+: means the column represents a label or other useful information that is
+ not suitable for numerical analysis.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI2_07_Data_Type_Selection1.jpg
+	scale 55
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Data-Type-Specification"
+
+\end_inset
+
+Data Type Specification
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+After specifying the data type of the first five columns, the display will
+ look as shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Data-Type-Specification-1"
+
+\end_inset
+
+.
+ There are two important points to remember here.
+ First, the order of the columns does not matter.
+ For example, it is perfectly acceptable if your data file has the 
+\begin_inset Quotes eld
+\end_inset
+
+SEX
+\begin_inset Quotes erd
+\end_inset
+
+ column at some location other than column #5.
+ 
+\end_layout
+
+\begin_layout Standard
+The second noteable point is that the columns 1 - 5 as shown contain the
+ essential structure information for pedigree analysis: pedigree ID, individual
+ ID, mother ID, father ID and sex.
+ These five items are the minimal requirement for almost all of the S.A.G.E.
+ programs, so be sure your data has this information before you try to import
+ the file.
+ (Please refer to S.A.G.E.
+ User Reference Manual for the specifics.)
+\end_layout
+
+\begin_layout Standard
+Note that the column names at the top have been taken directly from the
+ header row of your input file.
+ These names will become the 
+\begin_inset Quotes eld
+\end_inset
+
+variable
+\begin_inset Quotes erd
+\end_inset
+
+ names that you can use within S.A.G.E.
+ programs.
+ If you would like to change a name for some reason, for example change
+ 
+\begin_inset Quotes eld
+\end_inset
+
+FATHER
+\begin_inset Quotes erd
+\end_inset
+
+ to 
+\begin_inset Quotes eld
+\end_inset
+
+DAD_ID
+\begin_inset Quotes erd
+\end_inset
+
+, simply double-click on the name and edit the field as desired.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI2_08_Data_Type_Selection2.jpg
+	scale 55
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Data-Type-Specification-1"
+
+\end_inset
+
+Data Type Specification (continued)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Column #6, designated 
+\begin_inset Quotes eld
+\end_inset
+
+AFFECTION
+\begin_inset Quotes erd
+\end_inset
+
+ represents a binary trait under study.
+ When you select the TRAIT data type from the drop-down list, a dialog appears
+ as shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Variable-Characteristics"
+
+\end_inset
+
+.
+ The dialog requires you to provide additional information about the data
+ item.
+ In particular you must specify the character used to represent a missing
+ value (a dot (
+\begin_inset Quotes eld
+\end_inset
+
+.
+\begin_inset Quotes erd
+\end_inset
+
+) by default), whether it is binary or quantitative, and what values are
+ associated with affected and unaffected status, respectively.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI2_09_Variable_Characteristics1.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Variable-Characteristics"
+
+\end_inset
+
+Variable Characteristics
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The next 6 columns in the example are set as quantitative covariates with
+ default missing value character equal to 
+\begin_inset Quotes eld
+\end_inset
+
+.
+\begin_inset Quotes erd
+\end_inset
+
+.
+ When a pedigree data file contains multiple quantitative traits and/or
+ covariates, it is conventional to format the file such that the these columns
+ have the same missing value.
+ When the data file has been prepared this way, the S.A.G.E.
+ GUI provides a shortcut to specify all the traits and/or covariates at
+ once.
+ At the bottom of the dialog is a check box labelled 
+\begin_inset Quotes eld
+\end_inset
+
+Apply to next ___ column(s)
+\begin_inset Quotes erd
+\end_inset
+
+.
+ If you check this box, then all of the subsequent columns (as indicated
+ by the number that appears in the box next to it) will be given the same
+ data specifications (except for the 
+\emph on
+Name
+\emph default
+ attribute).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI2_10_Data_Type_Selection3.jpg
+	scale 55
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Data-Type-Selection"
+
+\end_inset
+
+Data Type Selection (continued)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Select the MARKER type from the drop-down list for the first marker, and
+ click the 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+OK
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button on the subsequent dialog to indicate that the marker is codominant
+ (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Variable-Characteristics-(continued)"
+
+\end_inset
+
+).
+ You can change the default allele delimiter and missing value characters
+ if needed.
+ At the bottom of the dialog is a check box labelled 
+\begin_inset Quotes eld
+\end_inset
+
+Apply to next ___ column(s)
+\begin_inset Quotes erd
+\end_inset
+
+.
+ If you check this box, then all of the subsequent columns (as indicated
+ by the number that appears in the box next to it) will be given the same
+ data specifications (except for the 
+\emph on
+Name
+\emph default
+ attribute).
+ When a pedigree data file contains marker phenotypes, it is conventional
+ to format the file such that the marker columns all occur after the family
+ structure and biometric data.
+ When the data file has been prepared this way, you can use this shortcut
+ to specify all the markers at once.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI2_11_Variable_Characteristics2.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Variable-Characteristics-(continued)"
+
+\end_inset
+
+Variable Characteristics (continued)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+Lastly, you must click on the 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+General Specifications
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button to provide a remaining bit of information (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Variable-Characteristics 3-(continued)"
+
+\end_inset
+
+).
+ If your data are already formatted with the default values for missingness
+ and sex code (as shown), then click the 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+OK
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button to save the settings and close the dialog.
+ Otherwise, make the required changes.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI2_12_Variable_Characteristics3.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Variable-Characteristics 3-(continued)"
+
+\end_inset
+
+Variable Characteristics (continued)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+Click the 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+Next
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button at the bottom of the Data Specification window to complete the import
+ process.
+ Accept the default value for the imported file name (unless you have a
+ preference for a different name) and, after the data has been successfully
+ imported, the main S.A.G.E.
+ navigation window and tool palette will be displayed as shown in Figure
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Main-Navigation-Window"
+
+\end_inset
+
+.
+ Note: The data import process makes a copy of your original data file (minus
+ any columns that have been left unspecified) and stores the copy within
+ the S.A.G.E.
+ project directory previously generated by the program.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI2_13_Main_Navigation_Window.jpg
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Main-Navigation-Window"
+
+\end_inset
+
+Main Navigation Window
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

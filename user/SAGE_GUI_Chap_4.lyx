@@ -1,0 +1,838 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass book
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman times
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 11
+\spacing single
+\use_hyperref false
+\papersize letterpaper
+\use_geometry true
+\use_amsmath 2
+\use_esint 0
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1.25in
+\topmargin 1in
+\rightmargin 1.25in
+\bottommargin 1in
+\secnumdepth 5
+\tocdepth 5
+\paragraph_separation skip
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Genome Map File Wizard
+\end_layout
+
+\begin_layout Standard
+This section describes how to use the Genome Map File Wizard tool in the
+ GUI to prepare a S.A.G.E.
+ compatable genome map file.
+ When a S.A.G.E.
+ program requires a genome map file, you can run the Genome Map File Wizard
+ to correcly format your gemone map file into a S.A.G.E.
+ compatable genome map file.
+\end_layout
+
+\begin_layout Section
+Supported Map Information
+\end_layout
+
+\begin_layout Standard
+The Genome Map File Wizard supports four different map information types
+ to be imported into the S.A.G.E.
+ GUI to generate a S.A.G.E.
+ compatable genome map file.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Position in the genetic map from p-ter
+\end_layout
+
+\begin_layout Enumerate
+Absolute position in the physical map (base pair)
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Note that this physical position is translated into a genetic distance in
+ cM on the (false) assumption that 1,000,000 base pair corresponds to 1
+ (Haldane or Kosambi) cM.
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Enumerate
+Distance in centimorgans(cM) to the next marker
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Note that the output from a linkage run then starts at the first marker.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Recombination fraction to the next marker
+\end_layout
+
+\begin_layout Standard
+A raw genome map information file can be either a delimited ASCII text file
+ or an Excel spreadsheet in which each line of the file contains information
+ on a single marker.
+\end_layout
+
+\begin_layout Section
+Importing a Genome Map File
+\end_layout
+
+\begin_layout Standard
+From the S.A.G.E.
+ Main Menu bar, select Tools -> Create a Genome Descreption File.
+ When the Genome map file wizard dialog appears, enter the location of your
+ raw genome map information file with appropriate information for your file
+ format (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Genome1"
+
+\end_inset
+
+).
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI4_GenomeWizard1.jpg
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Genome1"
+
+\end_inset
+
+Data Location Dialog
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Click the 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+Next
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button at the bottom of the Import Genome Data window to specify the map
+ function (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Genome2"
+
+\end_inset
+
+).
+ Enter the name of the genome and select the appropriate map function for
+ your analysis, then click the
+\family sans
+\color blue
+ 
+\family default
+\color inherit
+
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+Next
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button at the bottom for the next step.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI4_GenomeWizard2.jpg
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Genome2"
+
+\end_inset
+
+Map Function Specification Dialog
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+On the next step, a Data Specification Dialog appears (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Genome3"
+
+\end_inset
+
+).
+ The Data Specification Dialog displays the rows and columns found in the
+ original genome map data file, along with the field names inferred from
+ the header row (if provided).
+ 
+\end_layout
+
+\begin_layout Enumerate
+Click on the shaded cell containing the word “Unspecified” at the top of
+ the column to make the drop-down arrow appear.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Click on the drop-down arrow to obtain a list of valid “data type” choices
+ for the column.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Scroll down the list as needed to highlight the desired choice and click
+ to select it.
+ Possible data type choices are:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\series bold
+\emph on
+Unspecified
+\series default
+\emph default
+ (default): if selected, the column will NOT be imported into the S.A.G.E.
+ environment
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+\emph on
+Marker
+\series default
+\emph default
+: means the column represents a marker name
+\end_layout
+
+\begin_layout Itemize
+
+\series bold
+\emph on
+Position
+\series default
+\emph default
+: means the column represents position information
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI4_GenomeWizard3.jpg
+	scale 75
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Genome3"
+
+\end_inset
+
+Map Data Specification Dialog
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+When you select Position from the drop-down list, a position information
+ specification dialog appears as shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Genome4"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI4_GenomeWizard4.jpg
+	scale 75
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Genome4"
+
+\end_inset
+
+Position Information Specification Dialog
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+After you select the columns to import with the proper data type specification
+ (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Genome5"
+
+\end_inset
+
+), click the 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+Next
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button at the bottom for the next step.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI4_GenomeWizard5.jpg
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Genome5"
+
+\end_inset
+
+Map Data Specification Dialog (continued)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+In the next step, a Region information Specification Dialog appears (see
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Genome6"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+Select markers by clicking the first marker and then clicking the last marker
+ while holding down the shift key (alternatively, the marker range can be
+ selected by dragging the cursor over the markers).
+ Then click the 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+Set Region
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button and type in the region name for the selected markers (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Genome7"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Genome8"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI4_GenomeWizard6.jpg
+	scale 75
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Genome6"
+
+\end_inset
+
+Region Information Specification Dialog
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI4_GenomeWizard7.jpg
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Genome7"
+
+\end_inset
+
+Region Information Specification Dialog (continued)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI4_GenomeWizard8.jpg
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Genome8"
+
+\end_inset
+
+Region Information Specification Dialog (continued)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+After specifying the Regions correctly for all markers, click the 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+Next
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button at the bottom, and then enter the name of the newly imported file
+ (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Genome9"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI4_GenomeWizard9.jpg
+	scale 75
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Genome9"
+
+\end_inset
+
+Filename Specification Dialog
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+After the genome map data have been successfully imported, you can see the
+ new file under the 
+\begin_inset Quotes eld
+\end_inset
+
+internal
+\begin_inset Quotes erd
+\end_inset
+
+ folder in the main S.A.G.E.
+ navigation window as shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Genome10"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI4_GenomeWizard10.jpg
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Genome10"
+
+\end_inset
+
+Main Navigation Window
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

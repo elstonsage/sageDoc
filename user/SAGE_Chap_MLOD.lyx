@@ -1,0 +1,5062 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass book
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman times
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 11
+\spacing single
+\use_hyperref false
+\papersize letterpaper
+\use_geometry true
+\use_amsmath 2
+\use_esint 0
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1.25in
+\topmargin 1in
+\rightmargin 1.25in
+\bottommargin 1in
+\secnumdepth 5
+\tocdepth 5
+\paragraph_separation skip
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+MLOD
+\end_layout
+
+\begin_layout Standard
+MLOD Performs multi-point model-based LOD-score linkage analysis on small
+ constituent pedigrees.
+ Analysis is optimized for examining one-locus trait models across the genome.
+\end_layout
+
+\begin_layout Section
+Limitations
+\end_layout
+
+\begin_layout Standard
+MLOD calculates the likelihood of each possible inheritance pattern (i.e.,
+ ancestral origin of each allele) at each marker location for each constituent
+ pedigree, using all marker data and assuming no crossover interference.
+ It is restricted to small pedigrees due to the exponential nature of the
+ algorithm related to the number of individuals in the pedigree.
+ Only discrete traits may be analyzed, but there is no limit on the number
+ of discrete categories allowed (this effectively allows the analysis of
+ quantitative traits).
+ The time and space complexity of the algorithm is largely characterized
+ by the number of genomic locations examined and the exponent 
+\begin_inset Formula $2n-f$
+\end_inset
+
+, the number of bits in an inheritance vector, where  
+\begin_inset Formula $n$
+\end_inset
+
+ is the number of non-founders and  
+\begin_inset Formula $f$
+\end_inset
+
+ is the number of founders in a constituent pedigree.
+ During parameter specification the maximum value of  
+\begin_inset Formula $2n-f$
+\end_inset
+
+ may be set, so that any constituent pedigree that has a value larger than
+ this maximum will be skipped.
+ X-linked markers cannot be analyzed.
+\end_layout
+
+\begin_layout Section
+Theory
+\end_layout
+
+\begin_layout Standard
+Given trait data,  
+\begin_inset Formula $T$
+\end_inset
+
+, marker data, M, for a chromosomal region, and a point of interest in that
+ region,  
+\begin_inset Formula $p$
+\end_inset
+
+, MLOD computes a multi-point LOD score, defined as:  
+\begin_inset Formula 
+\[
+Z(p)=\log_{10}\left({\frac{P(M\,|\, T\, at\, p)}{P(M)P(T)}}\right),
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where P( 
+\emph on
+ T 
+\emph default
+) can be a probability mass or density function.
+\end_layout
+
+\begin_layout Standard
+Given a chromosomal region, a trait, and several pedigrees, MLOD calculates
+ multi-point LOD scores for each location of interest along the chromosome
+ by first generating exact multi-point likelihoods at each marker location
+ using a modified Lander-Green approach (Idury and Elston, 1996), and then
+ computing the likelihood for the trait of each inheritance pattern (which
+ is proportional to the probability of the trait for each inheritance pattern).
+ These likelihoods are combined to generate the final LOD score at each
+ location specified by the user.
+\end_layout
+
+\begin_layout Subsection
+The Exact Multi-point Algorithm
+\end_layout
+
+\begin_layout Standard
+The general algorithm used by MLOD to generate multi-point likelihoods and
+ other related statistics is called the exact multi-point algorithm.
+ This algorithm takes a chromosomal region and generates likelihoods of
+ all the possible inheritance patterns at each marker location in the region.
+ These likelihoods are then combined at each marker location to generate
+ multi-point LOD scores.
+\end_layout
+
+\begin_layout Standard
+Given a pedigree with  
+\begin_inset Formula $f$
+\end_inset
+
+ founders and  
+\begin_inset Formula $n$
+\end_inset
+
+ non-founders and a pattern of segregation at a particular locus for this
+ pedigree, we may represent this segregation as a vector of binary (0 or
+ 1) digits of length 
+\begin_inset Formula $2n$
+\end_inset
+
+ where each element represents one of the 
+\begin_inset Formula $2n$
+\end_inset
+
+ meioses in the pedigree.
+ The value of each binary element is determined by that meiosis receiving
+ either a grandpaternal or grandmaternal allele from the parent.
+ This "inheritance vector" is the basis for the Lander-Green multi-point
+ algorithm (Lander and Green, 1987).
+\end_layout
+
+\begin_layout Standard
+Because each meiosis is a separate event at a given locus, there are  
+\begin_inset Formula $2^{2n}$
+\end_inset
+
+ possible patterns of locus segregation in the pedigree for each marker.
+ However, because founder phase is unknown, it is impossible to determine
+ the true state of the meioses from the founders.
+ This means that, for the founder meioses, we do not know the binary values
+ to be used in the inheritance vectors for a given inheritance pattern.
+ Each inheritance pattern can therefore be represented by  
+\begin_inset Formula $2^{f}$
+\end_inset
+
+ different inheritance vectors that represent the same inheritance pattern
+ and share the same likelihood.
+ These "equivalence classes" of inheritance vectors reduce the number of
+ vectors that we must consider to  
+\begin_inset Formula $2^{2n-f}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+For a given set  
+\begin_inset Formula $M$
+\end_inset
+
+ of  
+\begin_inset Formula $i$
+\end_inset
+
+ markers  
+\begin_inset Formula $m_{1}\ldots m_{i}$
+\end_inset
+
+ (including a trait-marker, i.e.
+ a trait considered in the same manner as any other marker but with more
+ general penetrance functions), we calculate the joint probability of each
+ inheritance vector and the pedigree data at each marker.
+ The set of  
+\begin_inset Formula $2^{2n-f}$
+\end_inset
+
+joint probabilities at a particular marker is called the 
+\emph on
+ l
+\shape italic
+\emph default
+ikelihood vector
+\shape default
+ for that marker.
+ The sum of these  
+\begin_inset Formula $2^{2n-f}$
+\end_inset
+
+ joint probabilities is proportional to the likelihood for the pedigree
+ data.
+\end_layout
+
+\begin_layout Subsection
+Combining Likelihood Vector Elements to Obtain a Multi-point Likelihood
+\end_layout
+
+\begin_layout Standard
+Given two likelihood vectors,  
+\begin_inset Formula $v_{1}$
+\end_inset
+
+ and  
+\begin_inset Formula $v_{2}$
+\end_inset
+
+ at markers  
+\begin_inset Formula $m_{1}$
+\end_inset
+
+ and  
+\begin_inset Formula $m_{2}$
+\end_inset
+
+, and a recombination fraction  
+\begin_inset Formula $\theta_{1}$
+\end_inset
+
+ between them, we wish to calculate the joint likelihood.
+\end_layout
+
+\begin_layout Standard
+To do this, we form a transition matrix  
+\begin_inset Formula $T_{1}$
+\end_inset
+
+.
+ This is a  
+\begin_inset Formula $2^{2n-f}\times2^{2n-f}$
+\end_inset
+
+ matrix with elements  
+\begin_inset Formula $t_{\alpha\beta}=\theta_{1}^{q}\left({1-\theta_{1}}\right)^{2n-f-q}$
+\end_inset
+
+ where 
+\shape italic
+  
+\begin_inset Formula $\alpha$
+\end_inset
+
+
+\shape default
+, 
+\shape italic
+  
+\begin_inset Formula $\beta$
+\end_inset
+
+
+\shape default
+ are inheritance vectors of the two markers and  
+\begin_inset Formula $q$
+\end_inset
+
+ is the Hamming Distance between them (the number of elements of 
+\shape italic
+  
+\begin_inset Formula $\alpha$
+\end_inset
+
+
+\shape default
+, 
+\shape italic
+  
+\begin_inset Formula $\beta$
+\end_inset
+
+
+\shape default
+ that differ).
+ Then,  
+\begin_inset Formula 
+\[
+L\left({v_{1},v_{2}}\right)=v_{1}^{\prime}T_{1}v_{2}.
+\]
+
+\end_inset
+
+ To add a third likelihood vector  
+\begin_inset Formula $v_{3}$
+\end_inset
+
+ at marker  
+\begin_inset Formula $m_{3}$
+\end_inset
+
+, with recombination fraction  
+\begin_inset Formula $\theta_{2}$
+\end_inset
+
+ between  
+\begin_inset Formula $m_{2}$
+\end_inset
+
+ and  
+\begin_inset Formula $m_{3}$
+\end_inset
+
+, we form a transition matrix  
+\begin_inset Formula $T_{2}$
+\end_inset
+
+ analogous to  
+\begin_inset Formula $T_{1}$
+\end_inset
+
+.
+ Then
+\end_layout
+
+\begin_layout Standard
+  
+\begin_inset Formula $L\left({v_{1},v_{2},v_{3}}\right)=v_{1}^{\prime}T_{1}V_{2}T_{2}v_{3},$
+\end_inset
+
+ where  
+\begin_inset Formula $V_{2}$
+\end_inset
+
+ is a  
+\begin_inset Formula $2^{2n-f}\times2^{2n-f}$
+\end_inset
+
+ diagonal matrix containing the elements of  
+\begin_inset Formula $v_{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+In general,  
+\begin_inset Formula 
+\[
+L\left({v_{1},v_{2},\ldots v_{i-1},v_{i}}\right)=v_{1}^{\prime}T_{1}V_{2}T_{2}\ldots V_{i-1}T_{i-1}v_{i}.
+\]
+
+\end_inset
+
+ Idury and Elston (1996) suggested methods of calculating these likelihoods
+ that are efficient, given the underlying structure of the transition matrices.
+ S.A.G.E.
+ extends these methods to include additional optimizations that use the
+ genetic information at the markers to reduce the time complexity of these
+ algorithms.
+ Even so, the algorithm takes time and space that increases exponentially
+ with the size of the pedigree.
+ It is for this reason that these algorithms are restricted to small-to-medium
+ sized pedigrees.
+\end_layout
+
+\begin_layout Subsection
+Using Genetic Information to Improve Algorithm Performance
+\end_layout
+
+\begin_layout Standard
+There are  
+\begin_inset Formula $2^{2n-f}$
+\end_inset
+
+ inheritance vectors that we must consider at each marker.
+ However, when most individuals are typed, the joint probability of the
+ data and many of these inheritance patterns will be zero, because the inheritan
+ce pattern indicated by the vector is not consistent with the observed phenotype
+s at the marker in question.
+\end_layout
+
+\begin_layout Standard
+A
+\series bold
+ 
+\emph on
+fixed point
+\series default
+ 
+\emph default
+ is any meiosis where the transmission is known with certainty.
+ Given a fixed point in our likelihood vector, all inheritance vectors that
+ do not match the transmission of the fixed point have a joint probability
+ of 0.
+ This information is used to speed up the computation.
+ For each fixed point, we can reduce the time required for calculation by
+ a factor of 2.
+ These reductions are cumulative, so that for  
+\begin_inset Formula $n$
+\end_inset
+
+ fixed points, the time is reduced by a factor of 
+\begin_inset Formula $2^{n}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Calculating Multi-point Likelihood Vectors
+\end_layout
+
+\begin_layout Standard
+It is often necessary to calculate the multi-point likelihood vector at
+ a specific location  
+\begin_inset Formula $p$
+\end_inset
+
+ along a chromosome.
+ Assume we have a chromosome containing markers  
+\begin_inset Formula $m_{1},\ldots,m_{i}$
+\end_inset
+
+ with distances  
+\begin_inset Formula $d_{1},\ldots,d_{i-1}$
+\end_inset
+
+ between them.
+ We have two adjacent markers,  
+\begin_inset Formula $m_{j}$
+\end_inset
+
+ and  
+\begin_inset Formula $m_{j+1}$
+\end_inset
+
+ between which is a point  
+\begin_inset Formula $p$
+\end_inset
+
+ for which we wish to calculate a multi-point likelihood vector 
+\emph on
+ v 
+\emph default
+, with  
+\begin_inset Formula $p$
+\end_inset
+
+ some known distances  
+\begin_inset Formula $d_{j1}$
+\end_inset
+
+ and  
+\begin_inset Formula $d_{j2}$
+\end_inset
+
+ (where  
+\begin_inset Formula $d_{j1}+d_{j2}=d_{j})$
+\end_inset
+
+ from  
+\begin_inset Formula $m_{j}$
+\end_inset
+
+ and  
+\begin_inset Formula $m_{j+1}$
+\end_inset
+
+, respectively.
+ Distances are expressed as recombination fractions and may are translated
+ from genetic distance using either the Kosambi or Haldane map function.
+\end_layout
+
+\begin_layout Standard
+First, we calculate  
+\begin_inset Formula $v_{1},\ldots,v_{i}$
+\end_inset
+
+, the single-point likelihood vectors for each marker.
+ Then we calculate the following:  
+\begin_inset Formula 
+\[
+P_{j1}=v_{1}^{\prime}T_{1}V_{2}T_{2}\ldots V_{j}\, and\, P_{j2}=v_{i}^{\prime}T_{i-1}V_{i-1}\ldots V_{j+1}.
+\]
+
+\end_inset
+
+
+\begin_inset Formula $P_{j1}$
+\end_inset
+
+ is the multi-point information contributed to point 
+\begin_inset Formula $p$
+\end_inset
+
+ by all markers before point 
+\begin_inset Formula $p$
+\end_inset
+
+, while 
+\begin_inset Formula $P_{j2}$
+\end_inset
+
+ is the multi-point information contributed by all markers after 
+\begin_inset Formula $p$
+\end_inset
+
+.
+ Each is a 
+\begin_inset Formula $1\times2^{2n-f}$
+\end_inset
+
+ vector representing the combined multi-point information contributing to
+\emph on
+ v 
+\emph default
+.
+ Calculating
+\emph on
+ v
+\emph default
+ is now trivial: 
+\begin_inset Formula 
+\[
+v=P_{j1}T_{j1}T_{j2}{P}'_{j2}
+\]
+
+\end_inset
+
+ where 
+\begin_inset Formula ${P}'_{j2}$
+\end_inset
+
+is a diagonal matrix consisting of elements of 
+\begin_inset Formula $P_{j2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Computing LOD Scores
+\end_layout
+
+\begin_layout Standard
+For a given point 
+\begin_inset Formula $p$
+\end_inset
+
+ on a chromosome, we calculate the multi-point LOD score given that a trait
+ locus 
+\begin_inset Formula $T$
+\end_inset
+
+ (the trait-marker), is at that location by first calculating P(
+\begin_inset Formula $M|T$
+\end_inset
+
+ at 
+\begin_inset Formula $p)$
+\end_inset
+
+, the multi-point likelihood for the chromosome given that 
+\begin_inset Formula $T$
+\end_inset
+
+ is present at that location and follows the model specified.
+ We then calculate, P(
+\begin_inset Formula $M)$
+\end_inset
+
+, the multi-point likelihood for the chromosomal region without  
+\begin_inset Formula $T$
+\end_inset
+
+, and P(
+\begin_inset Formula $T)$
+\end_inset
+
+, the probability of the trait given the underlying model.
+ Then the LOD score for 
+\begin_inset Formula $T$
+\end_inset
+
+ being at point 
+\begin_inset Formula $p$
+\end_inset
+
+ is 
+\begin_inset Formula 
+\[
+Z(p)=\log_{10}\left({\frac{P(M\,|\, T\, at\, p)}{P(M)P(T)}}\right).
+\]
+
+\end_inset
+
+ At each location 
+\emph on
+ p 
+\emph default
+ we generate a LOD score for each pedigree.
+ The combined LOD score at 
+\emph on
+ p 
+\emph default
+ is the sum of each constituent pedigree's individual LOD score at 
+\emph on
+ p 
+\emph default
+.
+\end_layout
+
+\begin_layout Subsection
+Computing Information Content
+\end_layout
+
+\begin_layout Standard
+Information content at a location is determined based on the probabilities
+ of each inheritance pattern within the likelihood vector at that location.
+ If we have  
+\begin_inset Formula $n$
+\end_inset
+
+ possible inheritance patterns,  
+\begin_inset Formula $i_{1}$
+\end_inset
+
+ 
+\shape italic
+\SpecialChar \ldots{}
+
+\shape default
+  
+\begin_inset Formula $i_{n}$
+\end_inset
+
+, each with  
+\begin_inset Formula $b$
+\end_inset
+
+ bits and probability  
+\begin_inset Formula $p_{i}$
+\end_inset
+
+ such that  
+\begin_inset Formula 
+\[
+\sum\limits _{i}{p_{i}=1},
+\]
+
+\end_inset
+
+ then, the Information  
+\begin_inset Formula $I$
+\end_inset
+
+ is defined by [Kruglyak and Lander, 1995b]  
+\begin_inset Formula 
+\[
+I=1+\frac{\sum\limits _{i}{p_{i}\frac{\log(p_{i})}{\log(2)}}}{b}.
+\]
+
+\end_inset
+
+
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Program Input
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="2">
+<features tabularvalignment="middle">
+<column alignment="block" valignment="top" width="2in">
+<column alignment="block" valignment="top" width="3in">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+File Type
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+ Description
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Parameter file
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+Specifies the parameters and options with which to perform a particular
+ analysis.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Pedigree data file
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+Contains delimited records for each individual, including fields for identifiers
+, sex, parents, trait, and marker data.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Marker locus Description File
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+Lists the alleles, allele frequencies and phenotype to genotype mapping
+ for each marker locus.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+Trait locus description file
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+Lists the genetic model for each trait being analyzed.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Genome description file
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+Contains a description of the linked marker regions, including distances
+ between markers.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Running
+\family typewriter
+ mlod
+\end_layout
+
+\begin_layout Standard
+A typical run of MLOD program may use flags to identify the file types like
+ the following:
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+>mlod -p data.par -d data.ped -g ch1.gen -m t1.trt -l ch1.loc
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout Standard
+or, rely on a set file order like the following:
+\end_layout
+
+\begin_layout LyX-Code
+
+\size footnotesize
+>mlod data.par data.ped t1.trt ch1.loc ch1.gen
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout Standard
+where 
+\family typewriter
+data.par
+\family default
+ is the name of the parameter file, 
+\family typewriter
+data.ped
+\family default
+ is the name of the pedigree data file, 
+\family typewriter
+t1.trt
+\family default
+ is the name of the trait locus description file or type probability file,
+ 
+\family typewriter
+ch1.loc
+\family default
+ is the name of the marker locus description file, and 
+\family typewriter
+ch1.gen
+\family default
+ is the name of the genome description file.
+\end_layout
+
+\begin_layout Subsection
+The
+\family typewriter
+ mlod
+\family default
+ Block
+\end_layout
+
+\begin_layout Standard
+A 
+\family typewriter
+mlod
+\family default
+ block in the parameter file sets the options on how to perform an analysis
+ using MLOD.
+\end_layout
+
+\begin_layout Standard
+The following table shows the syntax for a 
+\family typewriter
+mlod
+\family default
+ parameter which starts the 
+\family typewriter
+mlod
+\family default
+ block.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="3">
+<features tabularvalignment="middle">
+<column alignment="block" valignment="top" width="1.25in">
+<column alignment="block" valignment="top" width="1.25in">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell multicolumn="1" alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="1">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+\series bold
+ parameter
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+\series bold
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+[, attribute]
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+ Explanation
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row endhead="true">
+<cell multicolumn="1" alignment="block" valignment="top" leftline="true" usebox="none" width="2in">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+ mlod
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="middle" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<row>
+<cell multicolumn="1" alignment="left" valignment="top" bottomline="true" usebox="none" width="3.25in">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Starts a MLOD analysis block.
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Value Range
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="2in">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+N/A
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Default Value
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ N/A
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+ Required
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ Yes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Applicable Notes
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ None
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="3">
+<features tabularvalignment="middle">
+<column alignment="block" valignment="top" width="1.25in">
+<column alignment="block" valignment="top" width="1.25in">
+<column alignment="center" valignment="top" width="0">
+<row endhead="true">
+<cell multicolumn="1" alignment="block" valignment="top" bottomline="true" leftline="true" usebox="none" width="2in">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+\size footnotesize
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+, out
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="middle" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<row>
+<cell multicolumn="1" alignment="left" valignment="top" bottomline="true" usebox="none" width="3.25in">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Specifies the root name to be used for output files.
+ Output file names will be formed by concatenating the root name and an
+ appropriate extension.
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Value Range
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="2in">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Character string representing a valid file name.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Default Value
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ mlod_analysis
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+ Required
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ No
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Applicable Notes
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ 1
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+ Notes
+\end_layout
+
+\begin_layout Enumerate
+An analysis output file is generated for each analysis performed.
+ The name of this file may be provided in the out 
+\shape italic
+ 
+\emph on
+ attribute
+\shape default
+ 
+\emph default
+ of the
+\family typewriter
+ mlod
+\family default
+ 
+\shape italic
+ 
+\emph on
+ parameter
+\shape default
+ 
+\emph default
+.
+ If no filename is provided, the filename defaults to the name of the region
+ with the extension ".lod
+\family typewriter
+"
+\family default
+ appended to it.
+\end_layout
+
+\begin_layout Standard
+The following table lists the parameters and attributes that may occur in
+ a 
+\family typewriter
+mlod
+\family default
+ block.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="3">
+<features tabularvalignment="middle">
+<column alignment="block" valignment="top" width="1.25in">
+<column alignment="block" valignment="top" width="1.25in">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell multicolumn="1" alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="1">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+\series bold
+ parameter
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+\series bold
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+[, attribute]
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+ Explanation
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row endhead="true">
+<cell multicolumn="1" alignment="block" valignment="top" bottomline="true" leftline="true" usebox="none" width="2in">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+ title
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="middle" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<row>
+<cell multicolumn="1" alignment="left" valignment="top" bottomline="true" usebox="none" width="3.25in">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Specifies title of the run
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+.
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Value Range
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="2in">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Character string
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Default Value
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ none
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+ Required
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ No
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Applicable Notes
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+None
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="3">
+<features tabularvalignment="middle">
+<column alignment="block" valignment="top" width="1.25in">
+<column alignment="block" valignment="top" width="1.25in">
+<column alignment="center" valignment="top" width="0">
+<row endhead="true">
+<cell multicolumn="1" alignment="block" valignment="top" bottomline="true" leftline="true" usebox="none" width="2in">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+ trait_marker
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="middle" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<row>
+<cell multicolumn="1" alignment="left" valignment="top" bottomline="true" usebox="none" width="3.25in">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Character string representing the name of a trait-marker to be analyzed.
+ MLOD requires at least one trait-marker to be specified, but the user may
+ list as many as desired.
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Value Range
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="2in">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Character string
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Default Value
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ None
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+ Required
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ Yes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Applicable Notes
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ None
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="3">
+<features tabularvalignment="middle">
+<column alignment="block" valignment="top" width="1.25in">
+<column alignment="block" valignment="top" width="1.25in">
+<column alignment="center" valignment="top" width="0">
+<row endhead="true">
+<cell multicolumn="1" alignment="block" valignment="top" bottomline="true" leftline="true" usebox="none" width="2in">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+ region
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="middle" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<row>
+<cell multicolumn="1" alignment="left" valignment="top" bottomline="true" usebox="none" width="3.25in">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Specifies the name of the region to be analyzed.
+ Must be a name listed in the genome description file.
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Value Range
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="2in">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Character string
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Default Value
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ None
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+ Required
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ Yes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Applicable Notes
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="3">
+<features tabularvalignment="middle">
+<column alignment="block" valignment="top" width="1.25in">
+<column alignment="block" valignment="top" width="1.25in">
+<column alignment="center" valignment="top" width="0">
+<row endhead="true">
+<cell multicolumn="1" alignment="block" valignment="top" bottomline="true" leftline="true" usebox="none" width="2in">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+ max_size
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="middle" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<row>
+<cell multicolumn="1" alignment="left" valignment="top" bottomline="true" usebox="none" width="3.25in">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Maximum size (2n - f) of pedigree to analyze.
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Value Range
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="2in">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+{0, 1, 2, ...}
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Default Value
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+18
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+ Required
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ No
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Applicable Notes
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ None
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="3">
+<features tabularvalignment="middle">
+<column alignment="block" valignment="top" width="1.25in">
+<column alignment="block" valignment="top" width="1.25in">
+<column alignment="center" valignment="top" width="0">
+<row endhead="true">
+<cell multicolumn="1" alignment="block" valignment="top" leftline="true" usebox="none" width="2in">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+ scan_type
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="middle" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<row>
+<cell multicolumn="1" alignment="left" valignment="top" bottomline="true" usebox="none" width="3.25in">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Specifies option to c
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+omputes LOD scores at the observed markers, at the specified intervals or
+ at the markers and intervals
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\noun default
+\color inherit
+.
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Value Range
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="2in">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+{marker, interval, both}
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Default Value
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+marker
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+ Required
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ No
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Applicable Notes
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ 2
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="3">
+<features tabularvalignment="middle">
+<column alignment="block" valignment="top" width="1.25in">
+<column alignment="block" valignment="top" width="1.25in">
+<column alignment="center" valignment="top" width="0">
+<row endhead="true">
+<cell multicolumn="1" alignment="block" valignment="top" bottomline="true" leftline="true" usebox="none" width="2in">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+ 
+\size footnotesize
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+, 
+\size default
+distance
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="middle" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<row>
+<cell multicolumn="1" alignment="left" valignment="top" topline="true" bottomline="true" usebox="none" width="3.25in">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+Sets the interval used to compute LOD scores between observed markers in
+ centiMorgans.
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Value Range
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="2in">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+(0,  
+\begin_inset Formula $\infty$
+\end_inset
+
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Default Value
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2.0
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+ Required
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ No
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Applicable Notes
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="3">
+<features tabularvalignment="middle">
+<column alignment="block" valignment="top" width="1.25in">
+<column alignment="block" valignment="top" width="1.25in">
+<column alignment="center" valignment="top" width="0">
+<row endhead="true">
+<cell multicolumn="1" alignment="block" valignment="top" bottomline="true" leftline="true" usebox="none" width="2in">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+ output_pedigrees
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="middle" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<row>
+<cell multicolumn="1" alignment="left" valignment="top" bottomline="true" usebox="none" width="3.25in">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Controls the amount of output generated on a per pedigree basis.
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Value Range
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="2in">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+{none, marker, interval, both}
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Default Value
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+ 
+\series default
+none
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+ Required
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ No
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Applicable Notes
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="3">
+<features tabularvalignment="middle">
+<column alignment="block" valignment="top" width="1.25in">
+<column alignment="block" valignment="top" width="1.25in">
+<column alignment="center" valignment="top" width="0">
+<row endhead="true">
+<cell multicolumn="1" alignment="block" valignment="top" bottomline="true" leftline="true" usebox="none" width="2in">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family typewriter
+ sample_detail
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="middle" width="0">
+<column alignment="left" valignment="top" width="0">
+<column alignment="left" valignment="top" width="0">
+<row>
+<cell multicolumn="1" alignment="left" valignment="top" bottomline="true" usebox="none" width="3.25in">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Controls the amount of detail provided about the useable pedigree data sample.
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Value Range
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top" width="2in">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+{none, removed, all}
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Default Value
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+removed
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+ Required
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ No
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell multicolumn="1" alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\size small
+Applicable Notes
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="2" alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+ Notes
+\end_layout
+
+\begin_layout Enumerate
+This causes the region to be analyzed using the current
+\shape italic
+\emph on
+ parameter
+\shape default
+\emph default
+ settings and the corresponding output to be generated.
+ If the
+\shape italic
+\emph on
+ value
+\shape default
+\emph default
+ of the
+\family typewriter
+ region
+\family default
+\shape italic
+\emph on
+ parameter
+\shape default
+\emph default
+ is not the name of a valid region, then the analysis is skipped.
+ If multiple
+\family typewriter
+ region
+\family default
+\shape italic
+\emph on
+ parameters
+\shape default
+\emph default
+ are specified in the same analysis block, then the last region specified
+ will be used.
+\end_layout
+
+\begin_layout Enumerate
+The
+\family typewriter
+ scan_type
+\family default
+ 
+\shape italic
+ 
+\emph on
+ parameter
+\shape default
+ 
+\emph default
+ defines the locations where LOD scores are to be computed.
+ If the 
+\shape italic
+ 
+\emph on
+ value
+\shape default
+ 
+\emph default
+ of
+\family typewriter
+ scan_type
+\family default
+ is set to
+\series bold
+ marker
+\series default
+, then LOD scores are computed only at observed marker loci.
+ If set to
+\series bold
+ interval
+\series default
+, then LOD scores are computed only at intervals between markers defined
+ by the
+\family typewriter
+ distance
+\family default
+ 
+\shape italic
+ 
+\emph on
+ attribute
+\shape default
+\emph default
+.
+ If set to
+\series bold
+ both
+\series default
+, then LOD scores are computed both at the marker locations and at the intervals
+ defined by the
+\family typewriter
+ distance
+\family default
+ 
+\shape italic
+ 
+\emph on
+ attribute
+\shape default
+\emph default
+.
+\end_layout
+
+\begin_layout Enumerate
+If
+\family typewriter
+ output_pedigrees
+\family default
+ is set equal to
+\series bold
+ marker
+\series default
+, the output for each pedigree is printed only for the markers.
+ If
+\family typewriter
+ output_pedigrees
+\family default
+ is set equal to
+\series bold
+ interval
+\series default
+, it is printed only for the intervals defined by the
+\family typewriter
+ distance
+\family default
+ 
+\shape italic
+ 
+\emph on
+ attribute for 
+\shape default
+\emph default
+the 
+\family typewriter
+scan_type
+\family default
+ 
+\shape italic
+ 
+\emph on
+ parameter
+\shape default
+\emph default
+.
+ If set equal to
+\series bold
+ both
+\series default
+, all points in the region are produced.
+ Note that the 
+\family typewriter
+scan_type
+\family default
+ 
+\shape italic
+ 
+\emph on
+ parameter
+\shape default
+ 
+\emph default
+ needs to be set properly for this option to work.
+ For example, when 
+\family typewriter
+scan_type
+\family default
+ is set to
+\series bold
+ marker
+\series default
+, then 
+\family typewriter
+output_pedigrees
+\family default
+ can be set to only either 
+\series bold
+none
+\series default
+ or
+\series bold
+ marker
+\series default
+.
+ When 
+\family typewriter
+scan_type
+\family default
+ is set to
+\series bold
+ both
+\series default
+, then 
+\family typewriter
+output_pedigrees
+\family default
+ can be set to any value.
+\end_layout
+
+\begin_layout Enumerate
+If
+\family typewriter
+ sample_detail
+\family default
+ is set equal to
+\series bold
+ removed
+\series default
+, the table only includes those individuals removed from analysis (with
+ reasons for removal), if set equal to
+\series bold
+ all
+\series default
+, then all individuals are included in the table with reason for removal
+ or being kept.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Program Output
+\end_layout
+
+\begin_layout Standard
+MLOD produces several output files that contain results and diagnostic informati
+on:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="3">
+<features tabularvalignment="middle">
+<column alignment="block" valignment="top" width="1.15in">
+<column alignment="left" valignment="top" width="1.6in">
+<column alignment="block" valignment="top" width="2.75in">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+File Name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+File Type
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Description
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+mlod.inf
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+Information output file
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+Contains informational diagnostic messages, warnings and program errors.
+ 
+\family default
+\series bold
+\shape default
+\size default
+\emph default
+\bar default
+\noun default
+\color inherit
+EXAMINE THIS FILE FIRST BEFORE OPENING ANY OTHER ANALYSIS OUTPUT FILES.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+genome.inf
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+Genome Information File
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+Contains diagnostic information on the genetic map data and the marker loci
+ that were provided for analysis.
+  No analysis results are stored in this file.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+mlod_analysis.sum
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+LOD analysis summary output file(s)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+Contains a table for each analysis performed by MLOD.
+  This table sums LOD scores and pools information content over all pedigrees
+ for each point considered in the analysis.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+mlod_analysis.det
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+LOD analysis detailed output file
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+Contains a table for each pedigree analyzed, listing LOD scores and information
+ content for each trait analyzed at each marker location.
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Genome Information Output File
+\end_layout
+
+\begin_layout Standard
+This file includes a table for each marker listing allele and genotype populatio
+n frequencies, assuming Hardy-Weinberg equilibrium.
+ If allele frequencies do not sum to 1.0, they are standardized to 1.0, so
+ these frequencies may not be as described in the locus description files.
+ 
+\end_layout
+
+\begin_layout Subsection
+LOD Analysis Summary Output File
+\end_layout
+
+\begin_layout Standard
+The LOD summary output file contains a table for each analysis performed
+ by MLOD.
+ These tables summarize LOD scores and information content for each point
+ considered in the analysis by summing LOD scores from all pedigrees in
+ the data set into a single LOD statistic.
+ Information content is similarly summarized.
+\end_layout
+
+\begin_layout Standard
+Example:
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+# Summary LOD score Output file
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+\begin_inset Newline newline
+\end_inset
+
+Analysis: Analysis 1 (chr5
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+=====================================================
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+ Pos      Trait       Marker      LOD score     Information   # Ped.
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+------  ----------  ----------  -------------  -------------  -------
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+   0.0  Dominant    D5G1         -5.519175122  0.96972173829      239
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+   0.7  Dominant    D5G2         -5.555971669  0.98266560809      239
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+   3.0  Dominant    D5G3         -5.979345816  0.98893249560      239
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+   5.4  Dominant    D5G4         -5.724044828  0.98947251776      239
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+   6.5  Dominant    D5G5         -5.771942142  0.98631478376      239
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+   9.3  Dominant    D5G6         -6.028611158  0.97542619041      239
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+  11.6  Dominant    D5G7         -6.498739837  0.99294067379      239
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+  14.8  Dominant    D5G8         -6.815240677  0.96763531437      239
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+  17.2  Dominant    D5G9         -6.298380200  0.98134489280      239
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+  19.6  Dominant    D5G10        -5.971049479  0.98499045128      239
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+  22.6  Dominant    D5G11        -5.115293921  0.97504538569      239
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+  23.5  Dominant    D5G12        -5.219382005  0.98451863326      239
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+  26.1  Dominant    D5G13        -6.053329330  0.99199116082      239
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+  27.9  Dominant    D5G14        -5.906801214  0.99470950295      239
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+  30.3  Dominant    D5G15        -6.435072155  0.99356584224      239
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+.
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+.
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+.
+\end_layout
+
+\begin_layout Subsection
+LOD Analysis Detailed Output File
+\end_layout
+
+\begin_layout Standard
+A separate LOD analysis output file is created for each analysis performed
+ by MLOD.
+ This file contains a table for each pedigree analyzed, listing LOD scores
+ and information content at each marker for each trait analyzed.
+ Points between markers are also be listed if the
+\family typewriter
+ pedigree_lod_out
+\family default
+ 
+\shape italic
+ 
+\emph on
+ parameter
+\shape default
+ 
+\emph default
+ has been set to
+\series bold
+ true
+\series default
+.
+\end_layout
+
+\begin_layout Standard
+Example:
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+LOD Table File
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+========================================================================
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+Analysis 'Analysis 1' on marker region 'chr5'
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+========================================================================
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+Pedigree 1   1 LOD scores
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+========================================================================
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+                              Dominant                 Recessive
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+          Marker       LOD score   Information   LOD score   Information
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+         --------     -----------  -----------  -----------  -----------
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+   0.0  D5G1             -0.00001   0.94751443     -0.00001   0.94746010
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+   0.7  D5G2             -0.00000   1.00000000     -0.00001   1.00000000
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+   3.0  D5G3             -0.00000   0.97313461     -0.00001   0.97312913
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+   5.4  D5G4             -0.00000   0.98934838     -0.00001   0.98933651
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+   6.5  D5G5             -0.00000   1.00000000     -0.00001   1.00000000
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+   9.3  D5G6             -0.00000   0.96847998     -0.00001   0.96847998
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+  11.6  D5G7             -0.00056   0.96911857     -0.00001   0.96915157
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+  14.8  D5G8             -0.00056   1.00000000     -0.00001   1.00000000
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+.
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+.
+\end_layout
+
+\begin_layout LyX-Code
+
+\size scriptsize
+.
+\end_layout
+
+\end_body
+\end_document

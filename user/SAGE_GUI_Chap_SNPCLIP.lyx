@@ -1,0 +1,1859 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass book
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman times
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 11
+\spacing single
+\use_hyperref false
+\papersize letterpaper
+\use_geometry true
+\use_amsmath 2
+\use_esint 0
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1.25in
+\topmargin 1in
+\rightmargin 1.25in
+\bottommargin 1in
+\secnumdepth 5
+\tocdepth 5
+\paragraph_separation skip
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+SNPCLIP
+\end_layout
+
+\begin_layout Standard
+SNPCLIP allows investigators to perform filtering on SNP data sets based
+ on a set of statistical calculations.
+ The user can then output the dataset into S.A.G.E.
+ format for further processing.
+ Currently, SNPCLIP allows investigators to filter based on missingness,
+ allele frequency, pairwise linkage disequilibrium, and genome map regions.
+ A special feature will allow the user to search the Maximum Unbroken Genomic
+ Sequences (MUGS) in a set of individuals, i.e., the largest haplotype they
+ might share.
+\end_layout
+
+\begin_layout Section
+Limitations
+\end_layout
+
+\begin_layout Standard
+SNPCLIP currently supports SNPs with two alleles (or a missing value) at
+ each location.
+\end_layout
+
+\begin_layout Standard
+SNPCLIP's memory usage has been optimized for usage with SNP data.
+ The internal data format is similar to that of PLINK.
+ As an example of its effeciency, the program can store 19K SNPs over 162
+ individuals using only 50 MBs of RAM (Hapmap phase 3 data).
+\end_layout
+
+\begin_layout Section
+Theory
+\end_layout
+
+\begin_layout Subsection
+Dimension Reduction
+\end_layout
+
+\begin_layout Standard
+Dimension Reduction is a term used to describe a filtering of a data set
+ so that only relevant data remain.
+ SNPCLIP reduces the dimension of a data set by using any of the available
+ filters provided (missingness, allele frequency, etc.).
+ By reducing the dimension (in this case, the number of SNPs) of a data
+ set one can reduce elements of the data set that do not provide useful
+ information or have undesireable attributes.
+ Two major benefits to reducing the dimensionality of a data set is that
+ the resulting data set contains only the data of interest, which in turn,
+ reduces the amount of time to perform further analysis on the data set.
+\end_layout
+
+\begin_layout Subsection
+Filters
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Filters"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Filtering is the core of SNPCLIP.
+ It is a form of dimension reduction that allows the user to specify restriction
+s on the data set to obtain useful SNPs.
+ The term filtering is more appropriate in this setting because the user
+ supplies a set of criteria that the data must consist of.
+ All of the filters within SNPCLIP are INCLUSIVE, meaning that any SNP that
+ meets all the criteria specified will remain in the filtered set.
+\end_layout
+
+\begin_layout Subsubsection
+Missingness Filter
+\end_layout
+
+\begin_layout Standard
+The missingness filter takes a simple count of how many individuals have
+ missing data for a given SNP.
+ If the percentage of missing individuals at a given SNP fall within the
+ min and max values specified by the user, they will be included in the
+ filtered data.
+\end_layout
+
+\begin_layout Subsubsection
+Minor Allele Frequency Filter
+\end_layout
+
+\begin_layout Standard
+The minor allele frequency filter counts the total number of occurrances
+ of each allele for each SNP.
+ It then selects the allele at each SNP with the lower count as the minor
+ allele.
+ If the percentage of minor alleles present at a given SNP falls within
+ the min and max values specified by the user, then the SNP will be included
+ in the filtered data.
+\end_layout
+
+\begin_layout Subsubsection
+Linkage Disequilibrium Filter
+\end_layout
+
+\begin_layout Standard
+The LD filter calculates the composite  LD between each pair of adajacent
+ SNPs (Weir 1996).
+ It then filters out SNPs that do not fall within the min and max specified
+ by the user.
+ Next, the LD filter enters a loop, comparing the remaining SNPs.
+ The filter will continue to apply the filter recursively on the remaining
+ SNPs until no change in the number of SNPs has occured between one run
+ and the subsequent run.
+\end_layout
+
+\begin_layout Subsubsection
+Genome Map Filter
+\end_layout
+
+\begin_layout Standard
+The genome map filter filters the SNPs based upon the map specified by the
+ user and the region(s) and SNP(s) specified by the user in the map location
+ dialog.
+\end_layout
+
+\begin_layout Subsection
+MUGS
+\end_layout
+
+\begin_layout Standard
+Given a sequence of unphased diallelic SNP genotypes in a region for each
+ of a set of N individuals, MUGS searches for haplotype sequences that could
+ be common to all N, or N-1, individuals in the set, and then ranks them
+ according to their length as defined by the number of SNPs in the sequence.
+ A SNP that is homozygous contributes to this length but gives no haplotype
+ information.
+ Either allele of a heterozygous SNP can contribute to a common haplotype,
+ so MUGS essentially searches over all possible phases to find sequences
+ that could be common to the N or N-1 individuals.
+ Although the individuals may be related, no relationship information is
+ used.
+ A SNP with a mising value contributes to the sequence length.
+ 
+\end_layout
+
+\begin_layout Section
+Running SNPCLIP
+\end_layout
+
+\begin_layout Standard
+To run SNPCLIP, locate and start the SNPCLIP.exe file in your S.A.G.E.
+ directory or from the Start Menu.
+\end_layout
+
+\begin_layout Subsection
+Importing A Data File
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Importing-A-File"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+To import a file, click the  
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+...
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Main-SNPCLIP-Window"
+
+\end_inset
+
+, outlined in red).
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/SNPCLIP_01_Import_Button.png
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Main-SNPCLIP-Window"
+
+\end_inset
+
+Main Screen for SNPCLIP.
+ Outlined in red is the file import button.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/SNPCLIP_02_Browse_For_File.png
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:File-Open-Dialog"
+
+\end_inset
+
+File Open Dialog
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This will open a file browser (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:File-Open-Dialog"
+
+\end_inset
+
+).
+ Browse to the appropraite file and click the  
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+Open
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button to begin the import process.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/SNPCLIP_03_File_Import.png
+	scale 40
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:File-Information-Dialog."
+
+\end_inset
+
+File Information Dialog.
+ Allows user to specify the format of the data file.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+You will now have to specify information about the file format to SNPCLIP
+ (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:File-Information-Dialog."
+
+\end_inset
+
+).
+ 
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+First - Select your file format type.
+ 
+\end_layout
+
+\begin_layout Itemize
+If each row represents an individual, with the columns representing SNPs,
+ select the S.A.G.E.
+ format.
+\end_layout
+
+\begin_layout Itemize
+If your file contains HapMap phase 3 data, select the Hapmap format.
+\end_layout
+
+\begin_layout Itemize
+If each row represents a SNP, with columns representing individuals in the
+ sample, select the SNPs by Row format.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Second - Select the file delimiter.
+\end_layout
+
+\begin_layout Itemize
+Select the appropriate delimiter from the list.
+\end_layout
+
+\begin_layout Itemize
+If your delimiter is not listed, select the  
+\begin_inset Quotes eld
+\end_inset
+
+other
+\begin_inset Quotes erd
+\end_inset
+
+ option and specify it in the box provided.
+\end_layout
+
+\begin_layout Itemize
+The data preview table will display the first few rows and columns of your
+ file using the delimiter specified.
+ (This is a good way to check that you specified the correct delimiter).
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Third - If you have pedigree data, specify where the identifier can be found.
+\end_layout
+
+\begin_layout Itemize
+In the picture above the pedigree ID is specified in the first column (FAMID)
+ and the Individual ID is specified by the second column (ID).
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Fourth - Provide information about the file format.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Quotes eld
+\end_inset
+
+Start SNP Column Data
+\begin_inset Quotes erd
+\end_inset
+
+ should specify the column in which the SNP data begin.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+In the picture above the SNP data begin in the 13th column.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The delimiter in this menu is meant to represent the delimiter between allele
+ values for a SNP
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+In the picture above the delimiter is a  
+\begin_inset Quotes eld
+\end_inset
+
+/
+\begin_inset Quotes erd
+\end_inset
+
+ since each allele value is seperated by a  
+\begin_inset Quotes eld
+\end_inset
+
+/
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+The Missing value is meant to represent the missing value for an allele.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+In the picture above the missing value is set to  
+\begin_inset Quotes eld
+\end_inset
+
+.
+\begin_inset Quotes erd
+\end_inset
+
+.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+
+\series bold
+Fifth - Click the  
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+OK
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button.
+\end_layout
+
+\begin_layout Standard
+SNPCLIP will now import your file to the system.
+ You can see the import progress in the progress bar dialog that will popup
+ in the center of your screen.
+ Once the progress bar reaches 100% the file import process is completed.
+ The dialog box will disappear and you will be left at the main SNPCLIP
+ screen.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/SNPCLIP_04_File_Import_Done.png
+	scale 40
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Main-SNIPCLIP-2"
+
+\end_inset
+
+Main Screen for SNPCLIP.
+ Outlined in red are the information boxes.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+SNPCLIP will display basic information regarding the data file you imported
+ (outlined in red boxes in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Main-SNIPCLIP-2"
+
+\end_inset
+
+).
+ The guage in the lower righthand corner of the screen gives the user a
+ visual display of how many SNPs remain after a set of filters have been
+ applied.
+\end_layout
+
+\begin_layout Standard
+At this point, you may begin filtering your data set (see section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Filtering-a-Data"
+
+\end_inset
+
+) or you may import a map file for your data set (see section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Importing-A-Map"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Subsection
+Importing A Map File
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Importing-A-Map"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The user may also specify a map file by clicking the  
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+...
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button next to the Map File Path similar to the Data File Path.
+ Once this button is clicked, the following dialog will appear (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Map-File-Import"
+
+\end_inset
+
+):
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/SNPCLIP_05_Map_Import.png
+	scale 40
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Map-File-Import"
+
+\end_inset
+
+Map File Import Dialog
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+SNPCLIP accept two different formats, please select the approapriate format
+ above.
+ The examples of these two formats are shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:One-line-per"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/SNPCLIP_06_map_row1.jpg
+	scale 40
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename images/SNPCLIP_06_map_row2.jpg
+	scale 40
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:One-line-per"
+
+\end_inset
+
+One line per marker (left) and two lines per marker (right)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Finally browse to the file and click  
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+Open
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button, similar to how the Data File was specified, and you will be left
+ at the main SNPCLIP screen again (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Main-SNIPCLIP-3"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/SNPCLIP_07_File_Map_Done.png
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Main-SNIPCLIP-3"
+
+\end_inset
+
+Main Screen for SNPCLIP after importing the map file
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Filtering a Data Set
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Filtering-a-Data"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Once the file has completed the import process (see section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Importing-A-File"
+
+\end_inset
+
+), you will see a screen similar to the one in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Main-SNIPCLIP-3"
+
+\end_inset
+
+.
+ In the source file area in the upper left hand portion of the window aspects
+ about the data file are imported.
+\end_layout
+
+\begin_layout Standard
+In this case the data files has 5540 SNPs for 921 individuals.
+ 
+\end_layout
+
+\begin_layout Standard
+You can now proceed to filtering the SNPs.
+\end_layout
+
+\begin_layout Standard
+Click the check box of the filters that you would like to use (see Figure
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Specifiying-a-Filter"
+
+\end_inset
+
+).
+ You can see in this figure, the user has selected the 
+\begin_inset Quotes eld
+\end_inset
+
+Missingness
+\begin_inset Quotes erd
+\end_inset
+
+ and  
+\begin_inset Quotes eld
+\end_inset
+
+Minor Allele Frequency
+\begin_inset Quotes erd
+\end_inset
+
+ filters (outlined in red).
+\end_layout
+
+\begin_layout Standard
+The  
+\begin_inset Quotes eld
+\end_inset
+
+Min
+\begin_inset Quotes erd
+\end_inset
+
+ and  
+\begin_inset Quotes eld
+\end_inset
+
+Max
+\begin_inset Quotes erd
+\end_inset
+
+ values represent the filtering criteria for the filter (see section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Filters"
+
+\end_inset
+
+ for details on each filter).
+\end_layout
+
+\begin_layout Standard
+The SNPs that have values that fall within the min and max will be kept,
+ the remainig SNPs will be clipped (filtered) out.
+\end_layout
+
+\begin_layout Standard
+Click the  
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+Apply
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button once you are satified with your choices for filtering.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/SNPCLIP_08_Filters_N.png
+	scale 40
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Specifiying-a-Filter"
+
+\end_inset
+
+Specifiying a Filter
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The progress bar will display SNPCLIP's filtering progress.
+ Once the filtering is complete you will notice a tab in the results section
+ specifying how many SNPs are remaining, the filters applied, and the values
+ for the min/max (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Main-SNIPCLIP-4"
+
+\end_inset
+
+).
+ 
+\end_layout
+
+\begin_layout Standard
+The beauty of storing filter information in tabs is that you can have multiple
+ tabs open at once and easily compare how different filters affected the
+ data set reduction.
+\end_layout
+
+\begin_layout Standard
+You will also notice in the lower right hand corner the SNP count and percent
+ remaining (relative to the original data set) are provided.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/SNPCLIP_09_File_Filter_Done.png
+	scale 40
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Main-SNIPCLIP-4"
+
+\end_inset
+
+Main Screen for SNPCLIP after applying a filter
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+It is also possible to filter the data set by genome map region.
+ The user can open the map location dialog by clicking the check box next
+ to the genomic region option at the end of the filters and then clicking
+ the  
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+...
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button.
+ Once the menu is open (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Genome-map-file"
+
+\end_inset
+
+), the user can add regions and/or SNPs that they wish to include in the
+ filter.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/SNPCLIP_10_Map_Loc.png
+	scale 40
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Genome-map-file"
+
+\end_inset
+
+Genome Map Location Filter Dialog
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If the user selects a region, they may further specify the precise location(s)
+ within the region that they would like by clicking the  
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+Location Details
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/SNPCLIP_11_Loc_Details.png
+	scale 40
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Location-Detail"
+
+\end_inset
+
+Location Detail Dialog
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The location details dialog (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Location-Detail"
+
+\end_inset
+
+) allows the user to specify the range of locations they would like to include
+ via two drop down menus.
+ The user needs to specify the location regions for each region individually.
+ If no location details are specified for a given region, all the SNPs within
+ the region will be included in the filter.
+ Once all the selections have been made, simply click the  
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+OK
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button on the map location dialog.
+\end_layout
+
+\begin_layout Standard
+You may continue to apply filters to the data set until you find the proportion
+ of remaning SNPs you are looking for.
+\end_layout
+
+\begin_layout Section
+Running MUGS
+\end_layout
+
+\begin_layout Standard
+Once SNPCLIP has completed the import process, you will see a screen similar
+ to the one in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:MUGS1"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/SNPCLIP_MUGS1.png
+	scale 40
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:MUGS1"
+
+\end_inset
+
+Main Screen for SNPCLIP after importing the files
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+From the SNPClip Main Menu bar, select Tools -> MUGS.
+ The Main Screen for MUGS will appear as in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:MUGS2"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/SNPCLIP_MUGS2.png
+	scale 35
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:MUGS2"
+
+\end_inset
+
+Main Screen for MUGS
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This dialog allows the user to specify either one or two different groups
+ of criteria for computation.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+MUGS without any group criteria 
+\end_layout
+
+\begin_layout Standard
+You can see the initial sample size (i.e.
+ number of individuals) in your file at the bottom of the group1 criteria
+ window (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:MUGS3"
+
+\end_inset
+
+).
+ To display the MUGS result for the default option (i.e.
+ for all individuals), click the “
+\family sans
+\color blue
+Go
+\family default
+\color inherit
+” button.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/SNPCLIP_MUGS3.png
+	scale 35
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:MUGS3"
+
+\end_inset
+
+MUGS result without criteria
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+MUGS with criteria for group
+\end_layout
+
+\begin_layout Standard
+It is also possible to display the MUGS results for a set of group criteria,
+ and for up to two different groups with different criteria in each.
+ Let’s assume that we want to compare affected and unaffected individuals.
+ Once you set the criteria for a group, the sample size will be updated
+ (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:MUGS4"
+
+\end_inset
+
+, outlined in orange, at left).
+ To display the MUGS results for one of the groups, click the “
+\family sans
+\color blue
+Go
+\family default
+\color inherit
+” button for that group.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/SNPCLIP_MUGS4.png
+	scale 35
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:MUGS4"
+
+\end_inset
+
+MUGS result with criteria for two groups (though not illustrated here, there
+ may be multiple criteria for a group)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Notice the longest SNP sequence window in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:MUGS3"
+
+\end_inset
+
+ and Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:MUGS4"
+
+\end_inset
+
+ at center.
+ Each block represents one SNP.
+ 
+\end_layout
+
+\begin_layout Itemize
+Cyan – SNP that is common to all N individuals
+\end_layout
+
+\begin_layout Itemize
+Magenta – SNP that is common to at least N-1 individuals
+\end_layout
+
+\begin_layout Itemize
+Yellow – Homozygote SNP
+\end_layout
+
+\begin_layout Itemize
+Gray – None of the above
+\end_layout
+
+\begin_layout Standard
+The program allows the user to specify a "broken-ness threshold" in the
+ Collective Agreement panel (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:MUGS4"
+
+\end_inset
+
+, outlined in green, at top right) as follows: If N individuals are submitted
+ in the group for analysis, then by default the algorithm will attempt to
+ find unbroken genotype sequences that are common to N individuals in the
+ group.
+ However, the user may optionally relax that constraint to N-1, in which
+ case the algorithm will attempt to find unbroken sequences that are common
+ to at least N-1 of the individuals in the group.
+\end_layout
+
+\begin_layout Standard
+The program also allows the user to search for specific SNPs (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:MUGS4"
+
+\end_inset
+
+, outlined in violet, at right).
+ If the user enters a comma separated list of SNPs, it will display for
+ each SNP a sequence containing that SNP and a sequence containing all of
+ the SNPs in the list.
+ When the user clicks a sequence ID in the search result, the program automatica
+lly highlights the sequence in the longest SNP sequence window.
+\end_layout
+
+\begin_layout Standard
+The “All SNP Visualization” panel (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:MUGS4"
+
+\end_inset
+
+, outlined in red, at bottom center) shows the results for all SNPs in your
+ data.
+ You can use the scroll bar to move to a specific position you have interest
+ in.
+ The zoom buttons allow the user to magnify the regions.
+ When the user clicks the specific position in the “All SNP Visualization”
+ panel, the program automatically highlights the sequence in the longest
+ SNP sequence window.
+\end_layout
+
+\begin_layout Standard
+For each sequence of SNPs, you can see more information by right clicking
+ on a sequence and selecting “Show details” as in Figures 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:MUGS5"
+
+\end_inset
+
+.
+ Then the detail dialog will show the allele frequency and missing individuals
+ for each SNP as in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:MUGS6"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/SNPCLIP_MUGS5.png
+	scale 35
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:MUGS5"
+
+\end_inset
+
+Right click on SNP sequence to display detail dialog
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/SNPCLIP_MUGS6.png
+	scale 30
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:MUGS6"
+
+\end_inset
+
+Details of Group1 and Group2
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Click the “
+\family sans
+\color blue
+OK
+\family default
+\color inherit
+” button (bottom right of the main screen for MUGS) to save the MUGS result
+ as a filtered data set in SNPCLIP (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:MUGS7"
+
+\end_inset
+
+).
+ SNPCLIP also allows the user to select a specific format for outputting
+ these data by clicking on File -> Export (see next section).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/SNPCLIP_MUGS7.png
+	scale 40
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:MUGS7"
+
+\end_inset
+
+Main Screen for SNPCLIP after MUGS
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Exporting a Data Set
+\end_layout
+
+\begin_layout Standard
+SNPCLIP allows the user to output the filtered data set in S.A.G.E.
+ format, Affymetrix format, or both at the same time.
+ You can reach the export feature by clicking File -> Export.
+ The following dialog will appear on your screen:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/SNPCLIP_12_Export_Dialog.png
+	scale 50
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Export File Dialog
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Pick the appropraite output format and click  
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+OK
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Next specify the filename and location you would like the data to be exported
+ too.
+ The S.A.G.E.
+ formated file will be named with the file name you supplied; the Affymetrix
+ formated file wll be named with the file name you supplied with a  
+\begin_inset Quotes eld
+\end_inset
+
+_T
+\begin_inset Quotes erd
+\end_inset
+
+ appended to the end of it.
+\end_layout
+
+\begin_layout Section
+References
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align left
+Weir, Bruce (1996),  
+\shape italic
+Genetic Data Analysis II,
+\shape default
+ 125-127.
+\end_layout
+
+\end_body
+\end_document

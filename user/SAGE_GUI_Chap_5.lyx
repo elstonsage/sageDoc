@@ -1,0 +1,537 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass book
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman times
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 11
+\spacing single
+\use_hyperref false
+\papersize letterpaper
+\use_geometry true
+\use_amsmath 2
+\use_esint 0
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1.25in
+\topmargin 1in
+\rightmargin 1.25in
+\bottommargin 1in
+\secnumdepth 5
+\tocdepth 5
+\paragraph_separation skip
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Function Block Wizard
+\end_layout
+
+\begin_layout Standard
+This section describes how to use the Function Block Wizard tool in the
+ GUI to create or modify function blocks in a parameter file.
+ This tool can be used at any time after the pedigree file has been imported
+ into a project.
+\end_layout
+
+\begin_layout Section
+Supported Actions 
+\end_layout
+
+\begin_layout Standard
+To start the Function Block Wizard tool, select Tools -> Create New Variable
+ from the S.A.G.E.
+ Main Menu bar.
+ When the function Specification Dialog appears (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Function1"
+
+\end_inset
+
+), four possible actions can be performed: 
+\end_layout
+
+\begin_layout Enumerate
+Add a new function block at the end of existing function blocks (if any)
+\end_layout
+
+\begin_layout Enumerate
+Edit an existing function block
+\end_layout
+
+\begin_layout Enumerate
+Delete an existing function block
+\end_layout
+
+\begin_layout Enumerate
+Change the order of existing function blocks
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI5_Function1.jpg
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Function1"
+
+\end_inset
+
+Specification Dialog
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If there exists any previous user-defined function blocks in the imported
+ parameter file, they will be displayed in this dialog.
+\end_layout
+
+\begin_layout Section
+Adding a New Function Block
+\end_layout
+
+\begin_layout Standard
+From the Specification Dialog above, click 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+Add
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button to add a new function block.
+ It will bring up the Expression Dialog as shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Function2"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI5_Function2.jpg
+	scale 45
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Function2"
+
+\end_inset
+
+Expression Dialog
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This dialog requires you to enter the new variable name and select the appropria
+te attributes.
+ All constants, operators and elementary functions, as well as all existing
+ variables that may be used in the new function expression, are listed in
+ this dialog.
+ You can type in the new function expression into the Expression window
+ in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Function3"
+
+\end_inset
+
+ (outlined in purple).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI5_Function3.jpg
+	scale 45
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Function3"
+
+\end_inset
+
+Expression Dialog (continued)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+You can also click the desired elements in order to compose the new function
+ expression (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Function4"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Function5"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI5_Function4.jpg
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Function4"
+
+\end_inset
+
+Expression Dialog (continued)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI5_Function5.jpg
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Function5"
+
+\end_inset
+
+Expression Dialog (continued)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+After you select all the necessary elements for a function expression, click
+ the 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+OK
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button next to the Expression window to complete the adding process.
+ This will bring back the main Specification Dialog with the newly created
+ variable and expression (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Function6"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI5_Function6.jpg
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Function6"
+
+\end_inset
+
+Specification Dialog
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Again, click 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+OK
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button in the Specification Dialog to complete and save the process.
+\end_layout
+
+\begin_layout Standard
+Once the new function block has been successfully created, you can see it
+ in the parameter file in the main S.A.G.E.
+ navigation window as shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Function7"
+
+\end_inset
+
+ (outlined in purple).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI5_Function7.jpg
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Function7"
+
+\end_inset
+
+Main Navigation Window
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

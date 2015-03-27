@@ -1,0 +1,781 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass book
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman times
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 11
+\spacing single
+\use_hyperref false
+\papersize letterpaper
+\use_geometry true
+\use_amsmath 2
+\use_esint 0
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1.25in
+\topmargin 1in
+\rightmargin 1.25in
+\bottommargin 1in
+\secnumdepth 5
+\tocdepth 5
+\paragraph_separation skip
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Running the S.A.G.E.
+ Programs
+\end_layout
+
+\begin_layout Standard
+This section describes how to run S.A.G.E.
+ programs and review their various output files.
+\end_layout
+
+\begin_layout Section
+Setting the Text Editor
+\end_layout
+
+\begin_layout Standard
+When S.A.G.E.
+ programs run, they produce ASCII text files as output.
+ Further, the imported data file and other input files used by S.A.G.E.
+ are also text files.
+ Since you will need to be able to view and edit those files on occasion,
+ the S.A.G.E.
+ GUI provides a very simple text editor for that purpose.
+ However, you may wish to use a more powerful editor, especially to view
+ large data files, in which case you can specify the editor of your choice
+ from the Tools -> Preferences menu in the main window.
+ When the Preferences dialog appears, click on the 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+Browse
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button to select the executable file for the text editor you want to use
+ with S.A.G.E.
+ Be sure to select a proper text editor and NOT a word processing program
+ such as Microsoft Word.
+ There are many good text editors available, and we recommend one called
+ TextPad (www.textpad.com).
+\end_layout
+
+\begin_layout Section
+Using the Navigation Window
+\end_layout
+
+\begin_layout Standard
+The first step in running S.A.G.E.
+ programs is to verify that the data were imported correctly.
+ This is best accomplished by running the PEDINFO (Pedigree Information)
+ program.
+ Any of the S.A.G.E.
+ programs can be launched by one of three means:
+\end_layout
+
+\begin_layout Enumerate
+Select the desired program from the Analysis Menu of the Main Window toolbar.
+\end_layout
+
+\begin_layout Enumerate
+Right-click on the Jobs icon in the Navigation panel and select the desired
+ program from the list that appears.
+\end_layout
+
+\begin_layout Enumerate
+Drag-and-drop the desired program icon from the palette onto the Jobs icon
+ in the Navigation panel (this is usually the quickest method)
+\end_layout
+
+\begin_layout Standard
+Using one of these three methods, create a new PEDINFO job.
+ The result should look similar to Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:A-New-PEDINFO"
+
+\end_inset
+
+ shown below.
+ Note that the Errors subfolder will contain an item called 
+\begin_inset Quotes eld
+\end_inset
+
+Missing Data File
+\begin_inset Quotes erd
+\end_inset
+
+.
+ This is normal and it simply means that you must specify which internal
+ data file you want to analyze with the PEDINFO program.
+ Use the mouse to drag-and-drop the 
+\begin_inset Quotes eld
+\end_inset
+
+pedigree0.dat
+\begin_inset Quotes erd
+\end_inset
+
+ file from the Internal folder onto the 
+\begin_inset Quotes eld
+\end_inset
+
+Missing Data File
+\begin_inset Quotes erd
+\end_inset
+
+ icon, and the error will be resolved.
+ Alternatively, you could click on the 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+...
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button to the right of the 
+\begin_inset Quotes eld
+\end_inset
+
+Data file
+\begin_inset Quotes erd
+\end_inset
+
+ text field and browse to the file of your choice.
+ In general, however, it is better to simply use the drag-and-drop method.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI3_01_PEDINFO_Job1.jpg
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:A-New-PEDINFO"
+
+\end_inset
+
+A New PEDINFO Job
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Lastly, click on the 
+\begin_inset Quotes eld
+\end_inset
+
+Analysis Definition
+\begin_inset Quotes erd
+\end_inset
+
+ tab to set any other desired options for the PEDINFO program (see Figure
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Setting-PEDINFO-Options"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI3_02_PEDINFO_Job2.jpg
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Setting-PEDINFO-Options"
+
+\end_inset
+
+Setting PEDINFO Options
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Before running the program, there are a few points worth noting.
+ 
+\end_layout
+
+\begin_layout Enumerate
+The default label for the new job (i.e., S.A.G.E.
+ program task) is called 
+\begin_inset Quotes eld
+\end_inset
+
+PEDINFO1
+\begin_inset Quotes erd
+\end_inset
+
+.
+ You can change the name by clicking once on the label to place it into
+ edit mode.
+ 
+\end_layout
+
+\begin_layout Enumerate
+To delete a job from those listed in the Navigation panel, right-click on
+ the job's icon and then select 
+\begin_inset Quotes eld
+\end_inset
+
+Delete
+\begin_inset Quotes erd
+\end_inset
+
+ from the list.
+\end_layout
+
+\begin_layout Enumerate
+To view and/or edit the contents of any of the files listed within the job
+ subfolders, simply double-click to invoke the text editor.
+\end_layout
+
+\begin_layout Standard
+The file named 
+\begin_inset Quotes eld
+\end_inset
+
+PEDINFO1.par
+\begin_inset Quotes erd
+\end_inset
+
+ is the S.A.G.E.
+ 
+\emph on
+parameter file
+\emph default
+ created for the job.
+ A parameter file is simply a text file containig information about the
+ pedigree data file and user options neeeded to run a particular program
+ (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Parameter-File"
+
+\end_inset
+
+).
+ When a S.A.G.E.
+ program runs, it reads the parameter file to acquire specifications on
+ how to interpret the data file, and then loads the data file itself.
+ After the data file has been loaded into memory, the program applies whatever
+ user options are specified to complete the job.
+ In the example below, the PEDINFO job appears to have no options specified,
+ which means that the program will simply run with whatever default behavior
+ had been programmed into it.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI3_03_Parameter_File.jpg
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Parameter-File"
+
+\end_inset
+
+Parameter File
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+When you click on the 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+Run
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button to launch a S.A.G.E.
+ program (PEDINFO, in this example), the 
+\begin_inset Quotes eld
+\end_inset
+
+Analysis Information
+\begin_inset Quotes erd
+\end_inset
+
+ dialog appears as shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Analysis-Information"
+
+\end_inset
+
+.
+ The dialog allows you to preview the parameter file settings that have
+ been created as a result of the GUI options you selected.
+ If necessary, you can make changes directly through this dialog before
+ running the program.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI3_04_Analysis_Information.jpg
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Analysis-Information"
+
+\end_inset
+
+Analysis Information
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+When you click on the 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+OK
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button, the GUI will launch the selected S.A.G.E.
+ program.
+ Runtime output from the will be displayed within a Console window, and
+ elapsed time information will be displayed within a Tasks window (see Figures
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Console-Window"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Tasks-Window"
+
+\end_inset
+
+).
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI3_05_Console_Window.jpg
+	scale 43
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Console-Window"
+
+\end_inset
+
+Console Window
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI3_06_Tasks_Window.jpg
+	scale 57
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Tasks-Window"
+
+\end_inset
+
+Tasks Window
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Output Files
+\end_layout
+
+\begin_layout Standard
+When the program has completed executing the job, an 
+\begin_inset Quotes eld
+\end_inset
+
+Output
+\begin_inset Quotes erd
+\end_inset
+
+ subfolder will contain all of the files produced by the S.A.G.E.
+ program (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Output-R1"
+
+\end_inset
+
+).
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI3_07_R1.jpg
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Output-R1"
+
+\end_inset
+
+Output Files
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Double-click on any of the output files to view their contents.
+ Most importantly, you should ALWAYS view the *.inf file (
+\begin_inset Quotes eld
+\end_inset
+
+pedinfo.inf
+\begin_inset Quotes erd
+\end_inset
+
+, in this case).
+ It contains informational diagnostic messages, warnings and program errors.
+ 
+\series bold
+EXAMINE THIS FILE FIRST BEFORE OPENING ANY OTHER ANALYSIS OUTPUT FILES.
+\end_layout
+
+\begin_layout Standard
+If any of the regular analysis output files are needed by other S.A.G.E.
+ programs, you may simply drag-and-drop them onto the target job subfolders
+ as needed.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+With ASSOC, SIBPAL, and LODPAL jobs, the GUI produces an R script file and
+ a pdf file with the resulting plot(s) (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Output_R2"
+
+\end_inset
+
+) in addition to the regular analysis output files.
+ The user can modify this R script file to produce a more desirable plot
+ running R outside of the GUI.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI3_08_R2_assoc_plot.jpg
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Output_R2"
+
+\end_inset
+
+Result Plots
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

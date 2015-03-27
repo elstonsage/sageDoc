@@ -1,0 +1,824 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass book
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman times
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 11
+\spacing single
+\use_hyperref false
+\papersize letterpaper
+\use_geometry true
+\use_amsmath 2
+\use_esint 0
+\use_mhchem 0
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1.25in
+\topmargin 1in
+\rightmargin 1.25in
+\bottommargin 1in
+\secnumdepth 5
+\tocdepth 5
+\paragraph_separation skip
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+References
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align left
+Amos CI, Dawson DV, Elston RC.
+ (1990)
+\shape italic
+ The Probabilistic Determination of Identity-by-Descent Sharing for Pairs
+ of Relatives from Pedigrees.
+
+\shape default
+ American Journal of Human Genetics; 47:842-853
+\end_layout
+
+\begin_layout Standard
+Bickeboller H, Clerget-Darpoux F.
+ (1995)
+\shape italic
+ Statistical Properties of the Allelic and Genotypic Transmission/Disequilibrium
+ Test for Multiallelic Markers
+\shape default
+.
+ Genetic Epidemiology; 12(6):865-870
+\end_layout
+
+\begin_layout Standard
+Blackwelder WC, Elston RC.
+ (1985) 
+\emph on
+A comparison of sib-pair linkage tests for disease susceptibility loci
+\emph default
+.
+ Genetic Epidemiology; 2:85-97
+\end_layout
+
+\begin_layout Standard
+Boehnke M.
+ (1991)
+\emph on
+ Allele Frequency Estimation from Data on Relatives
+\emph default
+.
+ American Journal of Human Genetics 48:22-25
+\end_layout
+
+\begin_layout Standard
+Bonney GE.
+ (1984)
+\shape italic
+ On the statistical determination of major gene mechanisms in continuous
+ human traits: regressive models
+\shape default
+.
+ American Journal of Medical Genetics; 18:731-749
+\end_layout
+
+\begin_layout Standard
+Bonney GE.
+ (1986)
+\shape italic
+ Regressive logistic models for familial disease and other binary traits
+\shape default
+.
+ Biometrics; 42:611-625
+\end_layout
+
+\begin_layout Standard
+Bonney GE.
+ (1998)
+\shape italic
+ Regressive Models
+\shape default
+.
+ Encyclopedia of Biostatistics; Vol 5:3755-3762
+\end_layout
+
+\begin_layout Standard
+Box GEP, Cox DR.
+ (1964)
+\shape italic
+ An analysis of transformations
+\shape default
+.
+ Journal of the Royal Statistical Society [B]; 26:211-252
+\end_layout
+
+\begin_layout Standard
+Cannings C, Thompson EA, Skolnick MH.
+ (1978)
+\shape italic
+ Probability functions on complex pedigrees
+\shape default
+.
+ Advanced Applied Probability; 10:26-61
+\end_layout
+
+\begin_layout Standard
+Carroll RJ, Ruppert D.
+ (1984)
+\shape italic
+ Power Transformations When Fitting Theoretical Models to Data
+\shape default
+.
+ American Journal of the Statistical Association; 79:321-328
+\end_layout
+
+\begin_layout Standard
+Cleves MA, Olson JM, Jacobs KB.
+ (1997)
+\shape italic
+ Exact Transmission-Disequilibrium Tests with Multiallelic Markers
+\shape default
+.
+ Case Western Reserve University School of Medicine Internal Paper
+\end_layout
+
+\begin_layout Standard
+Chen H, Chen J, Kalbfleisch JD (2001)
+\shape italic
+ A Modified Likelihood Ratio Test for Uncertain-Haplotype Transmission
+\shape default
+.
+ Journal of the Royal Statistical Society (B); 63:19-29
+\end_layout
+
+\begin_layout Standard
+Curtis D and Sham PC.
+ (1995)
+\emph on
+ An Extended Transmission/Disequilibrium Test (TDT) for Multi-Allele Marker
+ Loci.
+
+\emph default
+ Annals of Human Genetics; 59:323-336
+\end_layout
+
+\begin_layout Standard
+Demenais FM, Murigande C, Bonney GE.
+ (1990)
+\shape italic
+ Search for faster methods of fitting the regressive models to quantitative
+ traits
+\shape default
+.
+ Genetic Epidemiology; 7:319-334
+\end_layout
+
+\begin_layout Standard
+Demenais FM, Elston RC.
+ (1981)
+\emph on
+ A General Transmission Probability Model for Pedigree Data.
+
+\emph default
+ American Journal of Human Genetics; 33:300-306
+\end_layout
+
+\begin_layout Standard
+Elston RC.
+ (1992) 
+\emph on
+Designs for the global search of the human genome by linkage analysis.
+
+\emph default
+ In: Proceedings of the XVIth International Biometric Conference, Hamilton,
+ New Zealand, December 7-11, 1992, pp 39-51.
+ 
+\end_layout
+
+\begin_layout Standard
+Elston RC, Guo X, Williams L.
+ (1996) 
+\emph on
+Two-stage global search designs for linkage analysis using pairs of affected
+ relatives.
+
+\emph default
+ Genetic Epidemiology; 13:535-558.
+ 
+\end_layout
+
+\begin_layout Standard
+Elston RC, Stewart J.
+ (1971)
+\shape italic
+ A general model for the genetic analysis of pedigree data
+\shape default
+.
+ Human Heredity; 21:523-542
+\end_layout
+
+\begin_layout Standard
+Elston RC, Bonney GE.
+ (1986)
+\shape italic
+ Sampling via Probands in the Analysis of Family Studies
+\shape default
+.
+ Proceedings of the 13
+\begin_inset Formula $^{th}$
+\end_inset
+
+ International Biometric Conference
+\end_layout
+
+\begin_layout Standard
+Elston RC, George VT, Severtson F.
+ (1992)
+\shape italic
+ The Elston-Stewart algorithm for continuous genotypes and environmental
+ factors
+\shape default
+.
+ Human Heredity; 42:16-27
+\end_layout
+
+\begin_layout Standard
+Feingold E, Brown PO, Siegmund S.
+ (1993)
+\shape italic
+ Gaussian Models for Genetic Linkage Analysis Using Complete High-Resolution
+ Maps of Identity by Descent.
+
+\shape default
+ American Journal of Human Genetics; 53:234-251
+\end_layout
+
+\begin_layout Standard
+Fernando RL, Stricker C, Elston RC.
+ (1993)
+\shape italic
+ An Efficient Algorithm to Compute Posterior Genotypic Distribution for
+ Every Member of a Pedigree Without Loops.
+
+\shape default
+ Theory of Applied Genetics; 87:89-93
+\end_layout
+
+\begin_layout Standard
+Fernando RL, Stricker C, Elston RC.
+ (1994)
+\shape italic
+ The finite polygeinc mixed model: An alternative formulation for the mixed
+ model of inheritance
+\shape default
+.
+ Theort of Applied Genetics; 88:573-580
+\end_layout
+
+\begin_layout Standard
+George VT, Elston RC.
+ (1987)
+\shape italic
+ Testing the association between polymorphic markers and quantitative traits
+ in pedigrees
+\shape default
+.
+ Genetic Epidemiology; 4:193-201
+\end_layout
+
+\begin_layout Standard
+George VT, Elston RC (1988)
+\shape italic
+ Generalized modulus power transformations
+\shape default
+.
+ Commun Statististics -- Theory Methodology; 17:2933-2952
+\end_layout
+
+\begin_layout Standard
+George VT et.
+ al.
+ (1999)
+\emph on
+ A Test of Transmission/Disequilibrium for Quantitative Traits in Pedigree
+ Data, by Multiple Regression
+\emph default
+.
+ American Journal of Human Genetics; 65:236-245
+\end_layout
+
+\begin_layout Standard
+Ginsburg E, Malkin I, Elston RC.
+ (2006) 
+\emph on
+Theoretical Aspects of Pedigree Analysis.
+
+\emph default
+ Tel-Aviv, Israel.
+ Ramot Publishing House.
+\end_layout
+
+\begin_layout Standard
+Go RCP, Elston RC, Kaplan EB.
+ (1978)
+\emph on
+ Efficiency, robustness of pedigree segregation analysis
+\emph default
+.
+ American Journal of Human Genetics; 30:28-37
+\end_layout
+
+\begin_layout Standard
+Goddard KAB, Witte JS, Suarez, BK, Catalona, WJ, Olson, JM.
+ (2001)
+\shape italic
+ Model-free Linkage Analysis with Covariates Confirms Linkage of Prostate
+ Cancer to Chromosomes 1 and 4
+\shape default
+.
+ American Journal of Human Genetics; 68:1197-1206
+\end_layout
+
+\begin_layout Standard
+Guo X, Elston RC.
+ (1999) 
+\emph on
+Linkage information content of polymorphic genetic markers.
+
+\emph default
+ Human Heredity; 49:112-118
+\end_layout
+
+\begin_layout Standard
+Guo X, Elston RC.
+ (2000) 
+\emph on
+Two-stage global search designs for linkage analysis II: Including discordant
+ relative pairs in the study.
+
+\emph default
+ Genetic Epidemiology; 18:111-127
+\end_layout
+
+\begin_layout Standard
+Guo X, Olson JM, Elston RC, Niu T.
+ (2002) 
+\emph on
+The linkage information content value of polymorphism genetic markers in
+ model-free linkage analysis.
+
+\emph default
+ Human Heredity; 53:45-48.
+\end_layout
+
+\begin_layout Standard
+Hanson R, Knowler W.
+ (1998)
+\shape italic
+ Analytic Strategies to detect linkage to a common disorder with genetically
+ determined age of onset.
+
+\shape default
+ Genetic Epidemiology; 15:299-315
+\end_layout
+
+\begin_layout Standard
+Idury RM, Elston RC.
+ (1996)
+\shape italic
+ A Faster and More General Hidden Markov Model Algorithm for Multipoint
+ Likelihood Calculations.
+
+\shape default
+ Human Heredity; 47: 197-202
+\end_layout
+
+\begin_layout Standard
+Ito et al.
+ (2003)
+\emph on
+ Estimation of Haplotype Frequencies, Linkage-Disequilibrium Measures, and
+ Combination of Haplotype Copies in Each Pool by Use of Pooled DNA Data
+\emph default
+.
+ American Journal of Human Genetics; 72(2):384-398
+\end_layout
+
+\begin_layout Standard
+Karunaratne PM, Elston RC.
+ (1998)
+\emph on
+ A multivariate logistic model (MLM) for analyzing binary family data
+\emph default
+.
+ American Journal of Medical Genetics; 76:428-437
+\end_layout
+
+\begin_layout Standard
+Kuglyak L, Lander ES.
+ (1995)
+\shape italic
+ Complete Multipoint Sib-Pair Analysis of Qualitative and Quantitative Traits.
+
+\shape default
+ American Journal of Human Genetics; 57: 439-454
+\end_layout
+
+\begin_layout Standard
+Lander ES, Green P.
+ (1987)
+\shape italic
+ Construction of Multilocus Genetic Maps in Humans.
+
+\shape default
+ Proceedings National Academy of Science USA;  84:2363-2367
+\end_layout
+
+\begin_layout Standard
+Lange K.
+ (1997)
+\shape italic
+ An Approximate Model of Polygenic Inheritance
+\shape default
+.
+ Genetics; 147:1423-1430
+\end_layout
+
+\begin_layout Standard
+Lange K, Elston RC.
+ (1975)
+\shape italic
+ Extensions to Pedigree Analysis I-Likelihood Calculations for Simple and
+ Complex Pedigrees
+\shape default
+.
+ Human Heredity; 25:95-105
+\end_layout
+
+\begin_layout Standard
+Mathew G, Song Y, Elston RC.
+ (2011)
+\shape italic
+ Interval estimation of familial correlations from pedigrees
+\shape default
+.
+ Statistical Applications in Genetics and Molecular Biology; 10(1): Article
+ 11
+\end_layout
+
+\begin_layout Standard
+Ochs-Balcom HM, Guo X, Yonebayashi T, Wiesner G, Elston RC.
+ (2010)
+\shape italic
+ Program Update and Novel Use of the DESPAIR Program to Design a Genome-Wide
+ Linkage Study Using Relative Pairs
+\shape default
+.
+ Human Hereidty; 69(1): 45-51
+\end_layout
+
+\begin_layout Standard
+Olson JM, Wijsman EM.
+ (1993)
+\shape italic
+ Linkage between quantitative trait and marker loci: methods using all relative
+ pairs
+\shape default
+.
+ Genetic Epidemiolgy; 10:87-102
+\end_layout
+
+\begin_layout Standard
+Olson JM, Jacobs KB, Cleves MA.
+ (1997)
+\shape italic
+ Exact tests of table symmetry
+\shape default
+.
+ Internal paper
+\end_layout
+
+\begin_layout Standard
+Olson JM.
+ (1999)
+\shape italic
+ A General Conditional-Logistic Model for Affected-Relative-Pair Linkage
+ Studies
+\shape default
+.
+ American Journal of Human Genetics; 65:1760-1769
+\end_layout
+
+\begin_layout Standard
+Olson JM, Song Y, Lu Q, Wedig GC, Goddard KB.
+ (2004)
+\emph on
+ Using overall allele-sharing to detect the presence of large-scale data
+ errors and parameter misspecification in sib-pair linkage studies
+\emph default
+.
+ Human Heredity; 58:49-54
+\end_layout
+
+\begin_layout Standard
+Parzen E.
+ (1962)
+\shape italic
+ On Estimation of a Probability Density Function and Mode.
+
+\shape default
+ Annals of Mathematical Statistics; 33:1065-1076
+\end_layout
+
+\begin_layout Standard
+Pericak-Vance MA, Elston RC, Conneally PM, Dawson DV.
+ (1983)
+\emph on
+ Age-of-Onset Heterogeneity in Huntington's Disease Families
+\emph default
+.
+ Journal of Human Genetics; 14:49-59
+\end_layout
+
+\begin_layout Standard
+Quade SR, Elston RC, Goddard KA.
+ (2005)
+\emph on
+ Estimating Haplotype Frequencies in Pooled DNA Samples when there is Genotyping
+ Error
+\emph default
+.
+ BMC Genetics; 6(1):25
+\end_layout
+
+\begin_layout Standard
+Rice JP, Neuman RJ, Hoshaw SL, Daw EW, Gu C.
+ (1995)
+\shape italic
+ TDT with covariates and genomic screens with mod scores: their behavior
+ on simulated data
+\shape default
+.
+ Genet Epidemiol; 12:659-664
+\end_layout
+
+\begin_layout Standard
+Risch, N.
+ (1987)
+\shape italic
+ Assessing the role of HLA-linked and unlinked determinants of disease.
+
+\shape default
+ American Journal of Human Genetics; 40:1-14
+\end_layout
+
+\begin_layout Standard
+Risch N.
+ (1990) 
+\emph on
+Linkage strategies for genetically complex traits.
+ II.
+ The power of affected relative pairs.
+
+\emph default
+ American Journal of Human Genetics; 46:229-241.
+\end_layout
+
+\begin_layout Standard
+Risch, N.
+ (1990)
+\shape italic
+ Linkage Strategies for Genetically Complex Traits.
+ III.
+ The effect of Marker Polymorphism on Analyses of Affected Relative Pairs.
+
+\shape default
+ American Journal of Human Genetics; 46:242-253
+\end_layout
+
+\begin_layout Standard
+Schnell AH, Sun X, Igo RP, Elston RC.
+ (2012) 
+\shape italic
+Some capabilities for model-based and model-free linkage analysis using
+ the program package S.A.G.E.
+ (Statistical Analysis for Genetic Epidemiology)
+\shape default
+.
+ Human Hereidty; in press
+\end_layout
+
+\begin_layout Standard
+Scott D, Szewczyk W.
+ (2000)
+\shape italic
+ Fitting Mixtures of Regression Models by L2E
+\end_layout
+
+\begin_layout Standard
+Self S, Liang K.
+ (1987)
+\emph on
+ Asymptotic properties of maximum likelihood estimators and likehood ratio
+ tests under nonstandard conditions
+\emph default
+.
+ Journal of the American Statatistica Association; 82:605-610
+\end_layout
+
+\begin_layout Standard
+Sinha M, Song Y, Elston RC, Olson JM, Goddard KAB.
+ (2006)
+\shape italic
+ Prediction of empirical p values from asymptotic p values for conditional
+ logistic affected relative pair linkage analysis
+\shape default
+.
+ Human Hereidty; 61(1): 45-54
+\end_layout
+
+\begin_layout Standard
+Sobel E, Lange K.
+ (1996)
+\shape italic
+ Descent Graphs in Pedigree Analysis: Applications to Haplotyping, Location
+ Scores, and Marker-Sharing Statistics.
+
+\shape default
+ American Journal of Human Genetics; 58:1323-1337
+\end_layout
+
+\begin_layout Standard
+Spielman RS, Ewens WJ.
+ (1996)
+\shape italic
+ The TDT and Other Family-Based Tests for Linkage Disequilibrium and Association
+\shape default
+.
+ American Journal of Human Genetics; 59:983-989
+\end_layout
+
+\begin_layout Standard
+Spielman RS, McGinnis RE, Ewens WJ.
+ (1993)
+\shape italic
+ Transmission Test for Linkage Disequilibrium: The Insulin Gene Region and
+ Insulin-Dependent Diabetes Mellitus (IDDM).
+
+\shape default
+ American Journal of Human Genetics; 52:506-516
+\end_layout
+
+\begin_layout Standard
+Wang N, Akey JM, Zhang K, Chakraboryy R, Jin L.
+ (2002)
+\emph on
+ Distribution of Recombination Crossovers and the Origin of Haplotype Blocks:
+ The Interplay of Population History, Recombination and Mutation
+\emph default
+.
+ American Journal of Human Genetics; 71:1227-1234
+\end_layout
+
+\begin_layout Standard
+Wang S, Kidd KK, Zhao H.
+ (2003)
+\emph on
+ On the Use of DNA Pooling to Estimate Haplotype Frequencies
+\emph default
+.
+ Genetic Epidemiology; 24:74-82
+\end_layout
+
+\begin_layout Standard
+Wang T, Elston RC.
+ (2005)
+\emph on
+ Two-level Haseman-Elston regression for general pedigree data analysis
+\emph default
+.
+ Genetic Epidemiology; 29:12-22
+\end_layout
+
+\begin_layout Standard
+Wang T, Elston RC.
+ (2006)
+\emph on
+ A quantitative linkage score for an association study following a linkage
+ analysis
+\emph default
+.
+ BMC Genetics; 7:5
+\end_layout
+
+\begin_layout Standard
+Wang T, Elston RC.
+ (2007)
+\emph on
+ Regression-based multivariate linkage analysis with an application to blood
+ pressure and body mass index
+\emph default
+.
+ Annals of Human Genetics; 71:96-106
+\end_layout
+
+\begin_layout Standard
+Wijsman EM, Amos CI.
+ (1997)
+\shape italic
+ Genetic Analysis of Simulated Oligogenic Traits in Nuclear and Extended
+ Pedigrees: Summary of GAW10 Contributions
+\shape default
+.
+ In: Goldin L, Bailey-Wilson J, Borecki I, Falk C, Goldstein A, Suarez B,
+ and MacCluer J.
+
+\emph on
+ Genetic Analysis Workshop 10: Detection of genes for complex traits
+\emph default
+.
+
+\shape italic
+\emph on
+ Genetic Epidemiology
+\emph default
+;
+\shape default
+ 14:S719-S736
+\end_layout
+
+\begin_layout Standard
+Whittemore AS, Tu IP.
+ (1998)
+\shape italic
+ Simple, robust linkage tests for affected sibs
+\shape default
+.
+ American Journal of Human Genetics; 62:1228-1242
+\end_layout
+
+\begin_layout Standard
+Ziegler A, Böddeker I, Geller F, Müller H, Guo X.
+ (2001) 
+\emph on
+On the total expected study cost in two-stage genome-wide search designs
+ for linkage analysis using the mean test for affected sib pairs.
+
+\emph default
+ Genetic Epidemiology; 20:397-400.
+\end_layout
+
+\begin_layout Standard
+Zhu X, Olson JM, Schnell AH, Elston RC.
+ (1997) 
+\emph on
+Genetic Analysis Workshop 10: Model-free age-of-onset methods applied to
+ the linkage of bipolar disorder.
+
+\emph default
+ Genetic Epidemiology; 14:711-716.
+\end_layout
+
+\end_body
+\end_document

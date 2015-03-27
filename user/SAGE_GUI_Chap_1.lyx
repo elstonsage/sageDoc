@@ -1,0 +1,279 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass book
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman times
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 11
+\spacing single
+\use_hyperref false
+\papersize letterpaper
+\use_geometry true
+\use_amsmath 2
+\use_esint 0
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1.25in
+\topmargin 1in
+\rightmargin 1.25in
+\bottommargin 1in
+\secnumdepth 5
+\tocdepth 5
+\paragraph_separation skip
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Getting Started
+\end_layout
+
+\begin_layout Standard
+This document provides general instructions for using the Java-based Graphical
+ User Interface (GUI) that accompanies the S.A.G.E.
+ (Statistical Analysis for Genetic Epidemiology) software package.
+\end_layout
+
+\begin_layout Section
+System Requirements
+\end_layout
+
+\begin_layout Standard
+The S.A.G.E.
+ programs have been tested to run on Windows XP, Vista and Windows 7.
+ The software also runs on Linux 32-bit and 64-bit systems for the Intel
+ platform, as well as Linux 64-bit Itanium.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/GUI1_01_system1.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+It is always advisable to make sure that the target platform has the most
+ current Service Pack and Java version installed.
+ The S.A.G.E.
+ GUI will not run unless the Java Runtime Environment (JRE) is correctly
+ installed on your system.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Downloading S.A.G.E.
+\end_layout
+
+\begin_layout Standard
+You can download S.A.G.E.
+ for the platform of your choice at http://darwin.cwru.edu/sage/.
+ Move your mouse to the 
+\family sans
+\color blue
+Downloads
+\family default
+\color inherit
+ tab, and click 
+\family sans
+\color blue
+Download S.A.G.E.
+
+\family default
+\color inherit
+ from the list.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/GUI1_02_download1.jpg
+	scale 95
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+You will need to provide an email address and a previously assigned user
+ registration number (Licence ID) to download the software.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/GUI1_03_download2.jpg
+	scale 90
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If you have not already done so, you can obatin a License ID for S.A.G.E.
+ by clicking on the indicated link (
+\family sans
+\color blue
+here
+\family default
+\color inherit
+) and fill out the form as required, shown on the next page.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/GUI1_04_register1.jpg
+	scale 60
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+After registering, you will receive an email with your License ID to finish
+ the download procedure.
+ Provide your email address that you used to register and your Licence ID,
+ and click the 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+Contunue
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/GUI1_05_download3.jpg
+	scale 90
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+Download S.A.G.E.
+ for the platform of your choice.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/GUI1_06_download4.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Installing S.A.G.E.
+\end_layout
+
+\begin_layout Standard
+To install S.A.G.E.
+ on your Windows, simply run the S.A.G.E.
+ setup program and follow the instructions.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/GUI1_07_install1.jpg
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Launching S.A.G.E.
+\end_layout
+
+\begin_layout Standard
+Individual S.A.G.E.
+ programs may be launched from the command line; however, this manual focuses
+ exclusively on use of the GUI to run the programs.
+ See the S.A.G.E.
+ User Reference Manual for further details on command line options.
+ On Windows platforms, double-click the S.A.G.E.
+ icon to run the GUI, and on Linux platforms you will need invoke the GUI
+ through the standard Java interface.
+\end_layout
+
+\end_body
+\end_document

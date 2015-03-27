@@ -1,0 +1,399 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass book
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman times
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 11
+\spacing single
+\use_hyperref false
+\papersize letterpaper
+\use_geometry true
+\use_amsmath 2
+\use_esint 0
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1.25in
+\topmargin 1in
+\rightmargin 1.25in
+\bottommargin 1in
+\secnumdepth 5
+\tocdepth 5
+\paragraph_separation skip
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+GMDR Utility
+\end_layout
+
+\begin_layout Standard
+This section describes how to use the GMDR utility tool in the GUI to create
+ input files for the Generalized Multifactor Dimensionality Reduction (GMDR)
+ program (http://www.ssg.uab.edu/gmdr/) using the output files from ASSOC program.
+ This tool can be used at any time after the ASSOC output files has been
+ generated in a project.
+\end_layout
+
+\begin_layout Section
+Running 
+\end_layout
+
+\begin_layout Standard
+To start the GMDR utility tool, select Tools -> GMDR Utility from the S.A.G.E.
+ Main Menu bar.
+ The Main Screen for GMDR Utility appears (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:GMDR1"
+
+\end_inset
+
+) showing three main panels: Required files (top), Marker information (bottom
+ left), and Class information (bottom right).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI6_GMDR1.png
+	scale 45
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:GMDR1"
+
+\end_inset
+
+Main screen for GMDR Utility
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Required files 
+\end_layout
+
+\begin_layout Itemize
+ASSOC parameter file – the location of the parameter file
+\end_layout
+
+\begin_layout Itemize
+Pedigree file – the location of the pedigree data file
+\end_layout
+
+\begin_layout Itemize
+ASSOC residual file – the location of the ASSOC residual output file
+\end_layout
+
+\begin_layout Itemize
+ASSOC summary file – the location of the ASSOC summary output file
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Marker information
+\end_layout
+
+\begin_layout Standard
+After importing the required files above, the program will display all the
+ available markers in the file you imported by marker name (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:GMDR2"
+
+\end_inset
+
+.
+ at bottom left) or by model (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:GMDR2"
+
+\end_inset
+
+.
+ at bottom left) in marker information panel.
+\end_layout
+
+\begin_layout Standard
+For the genotype file, you should pick a small subset of them.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI6_GMDR2.png
+	scale 45
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:GMDR2"
+
+\end_inset
+
+Markers by name
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI6_GMDR3.png
+	scale 45
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:GMDR3"
+
+\end_inset
+
+Markers by model
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+When the program parses marker name by model, it assumes that the model
+ name is in the form “xxx_valid marker name”, where x represents any letter
+ or digit.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Class information
+\end_layout
+
+\begin_layout Itemize
+Column – the column containing class information in the pedigree file.
+\end_layout
+
+\begin_layout Itemize
+Affected value / Threshold – the value representing affected in the column.
+ If the column contains quantitative values, values greater than the threshold
+ are considered to be affected.
+\end_layout
+
+\begin_layout Section
+Output Files
+\end_layout
+
+\begin_layout Standard
+Click 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family sans
+\color blue
+OK
+\family default
+\color inherit
+
+\begin_inset Quotes erd
+\end_inset
+
+ button, then this utility will create two files for GMDR.
+\end_layout
+
+\begin_layout Itemize
+Genotype file
+\end_layout
+
+\begin_layout Itemize
+Phenotype file
+\end_layout
+
+\begin_layout Standard
+Once it has completed the process, the result dialog will pop-up in the
+ center of your screen (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:GMDR4"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename images/GUI6_GMDR4.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:GMDR4"
+
+\end_inset
+
+Result Dialog
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The user can run the GMDR using these files.
+\end_layout
+
+\begin_layout Standard
+Note: 
+\end_layout
+
+\begin_layout Standard
+The phenotype file will be independent residuals from a null model, as in
+ ASSOC you must have “model, null=true”.
+ Because ASSOC allows adjustment for covariates, there is no need to do
+ that in GMDR (i.e.
+ SCHEME2 is unnecessary).
+\end_layout
+
+\end_body
+\end_document
